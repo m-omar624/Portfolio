@@ -1,0 +1,35 @@
+.nav-button {
+  background: transparent !important;
+  box-shadow: none !important;
+  position: relative;
+  font-weight: 350; /* keep constant */
+  transition: color 0.5s ease;
+}
+
+/* remove AntD hover background */
+.nav-button:hover,
+.nav-button:focus {
+  background: transparent !important;
+}
+
+/* Slightly stronger appearance without resizing text */
+.nav-button:hover {
+  text-shadow: 0 0 0.01px currentColor;
+}
+
+/* Underline animation */
+.nav-button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0px;
+  width: 0%;
+  height: 1.5px;
+  background-color: currentColor;
+  transition: width 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+  transform: translateX(-50%);
+}
+
+.nav-button:hover::after {
+  width: 80%;
+}

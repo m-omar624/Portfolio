@@ -18,7 +18,7 @@ export default function Landing() {
                             flex: 1,
                             marginLeft: 30,
                             height: "78vh",
-                            paddingTop: 150,   // 👈 pushes text downward
+                            paddingTop: 80,   // 👈 pushes text downward
                         }}
                     >
                         <Typography.Title

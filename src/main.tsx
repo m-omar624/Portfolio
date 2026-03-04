@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import "antd/dist/reset.css";
 
 function Root() {
-const [dark, setDark] = React.useState(false);
+const [dark, setDark] = React.useState(true);
 
 React.useEffect(() => {
   localStorage.setItem("darkMode", JSON.stringify(dark));

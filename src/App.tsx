@@ -2,6 +2,8 @@ import { Switch, Typography, theme, Card, Flex } from "antd";
 import Navigation from "./Navigation";
 import Landing from "./Landing";
 import Experience from "./Experience";
+import Projects from "./Projects";
+import Resume from "./Resume";
 
 type Props = {
   dark: boolean;
@@ -24,6 +26,8 @@ export default function App() {
       <Navigation></Navigation>
       <Landing></Landing>
       <Experience></Experience>
+      <Projects></Projects>
+      <Resume></Resume>
       </Flex>
 
       {/* <div style={{ display: "flex", alignItems: "center", gap: 12 }}>

@@ -17,7 +17,7 @@ export default function Experience() {
                     selectedExperience={selectedExperience}
                     setSelectedExperience={setSelectedExperience}
                 >
-                    <Flex vertical justify="space-between" style={{ width: "100%", marginTop: "45%", height: "55%" }} gap={20}>
+                    <Flex vertical justify="space-between" style={{ width: "100%", marginTop: "30vh", height: "55%" }} gap={20}>
                         <Flex vertical gap={10}>
                             <Card size="small">
                                 <Typography.Title level={4}>Software Engineer, Coop</Typography.Title>

@@ -39,7 +39,7 @@ export default function ExperienceCard({
         borderRadius: 0,
         transition:
           "width 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), filter 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), background-size 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)",
-        backgroundImage: `linear-gradient(to top, ${token.colorBgContainer} 0%, ${token.colorBgContainer} 60%, rgba(255,255,255,0) 88%), url(${image})`,
+        backgroundImage: `linear-gradient(to top, ${token.colorBgContainer} 0%, ${token.colorBgContainer} 60vh, rgba(255,255,255,0) 88%), url(${image})`,
         backgroundPosition: `bottom, calc(50% + ${offsetX}px) calc(50% + ${offsetY}px)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: isSelected ? "100% 100%, cover" : "100% 0%, cover",

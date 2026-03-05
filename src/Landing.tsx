@@ -4,7 +4,18 @@ export default function Landing() {
     const { token } = useToken()
     return (
         <>
-            <Card>
+                <Card style={{
+                    zIndex: 100, 
+                    width: "98vw", 
+                    height: "90.2vh", 
+                    position: "absolute",
+                     top: 0,
+                     left:0,
+                     justifyContent: "center",
+                     alignItems: "center",
+                     padding: 10,
+                     opacity:1,
+                     background:"none"}}>
                 <Flex style={{ marginBlock: 30 }} gap={60}>
 
                     {/* Left Section */}
@@ -47,7 +58,9 @@ export default function Landing() {
                         </Typography.Text>
 
                         <Flex gap={16} style={{ marginTop: 40 }}>
-                            <Button size="large" type="primary">Download Resume</Button>
+                            <Button size="large" type="primary"
+                            color="purple"
+                            style={{ boxShadow:"0px 0px 10px 0px rgba(0, 0, 0, 0.5)"}}>Download Resume</Button>
                             <Button size="large" type="default">More About Me</Button>
                         </Flex>
                     </Flex>
@@ -67,6 +80,34 @@ export default function Landing() {
 
                 </Flex>
             </Card>
+
+            <div className="gradient-bg" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="goo">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                            <feColorMatrix
+                                in="blur"
+                                mode="matrix"
+                                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+                                result="goo"
+                            />
+                            <feBlend in="SourceGraphic" in2="goo" />
+                        </filter>
+                    </defs>
+                </svg>
+
+                <div className="gradients-container">
+                    <div className="g1" />
+                    <div className="g2" />
+                    <div className="g3" />
+                    <div className="g4" />
+                    <div className="g5" />
+                    <div className="interactive" />
+                </div>
+
+            </div>
+
 
         </>
     );

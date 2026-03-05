@@ -1,43 +1,97 @@
-import { Switch, Typography, theme, Card, Flex } from "antd";
+import React, { useEffect } from "react";
+import { theme, Flex } from "antd";
 import Navigation from "./Navigation";
 import Landing from "./Landing";
 import Experience from "./Experience";
 import Projects from "./Projects";
 import Resume from "./Resume";
 
-type Props = {
-  dark: boolean;
-  setDark: (v: boolean) => void;
-};
-
 export default function App() {
   const { token } = theme.useToken();
+  useEffect(()=>{
+    // Initialize interactive bubble after component mounts.
+    // Avoid relying on DOMContentLoaded (may have already fired).
+    let rafId: number | null = null;
+    let onMouse: ((e: MouseEvent) => void) | null = null;
+    let curX = 0;
+    let curY = 0;
+    let tgX = 0;
+    let tgY = 0;
 
+    function startTracking(interBubble: HTMLDivElement) {
+      function move() {
+        curX += (tgX - curX) / 20;
+        curY += (tgY - curY) / 20;
+        interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+        rafId = requestAnimationFrame(move);
+      }
+
+      onMouse = (event: MouseEvent) => {
+        tgX = event.clientX;
+        tgY = event.clientY;
+      };
+
+      window.addEventListener('mousemove', onMouse);
+      move();
+    }
+
+    const el = document.querySelector<HTMLDivElement>('.interactive');
+    if (el) {
+      startTracking(el);
+    } else {
+      // If element isn't present yet, watch for it and start when added.
+      const mo = new MutationObserver((_, observer) => {
+        const found = document.querySelector<HTMLDivElement>('.interactive');
+        if (found) {
+          startTracking(found);
+          observer.disconnect();
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
+
+    return () => {
+      if (onMouse) window.removeEventListener('mousemove', onMouse);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  },[])
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: token.colorBgLayout,
-        color: token.colorText,
-        padding: 10,
-      }}
-    >
-      <Flex vertical gap={6}>
-      <Navigation></Navigation>
-      <Landing></Landing>
-      <Experience></Experience>
-      <Projects></Projects>
-      <Resume></Resume>
-      </Flex>
+    <>
+      {/* Background from the example */}
 
-      {/* <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <Typography.Text>Dark mode</Typography.Text>
-        <Switch checked={dark} onChange={setDark} />
+
+
+      {/* Your site content */}
+      <div
+        style={{
+          minHeight: "100vh",
+          color: token.colorText,
+          padding: "0px 10px 10px 10px",
+          position: "relative",
+          zIndex: 1,
+          backgroundColor: token.colorBgBase,
+        }}
+      >
+                  <Navigation />
+              <div
+        style={{
+          minHeight: "100vh",
+          color: token.colorText,
+          paddingTop: 5,
+          position: "relative",
+          zIndex: 1,
+          backgroundColor: token.colorBgBase,
+        }}
+      >
+        <Flex vertical gap={6}>
+
+          <Landing />
+          <Experience />
+          <Projects />
+          <Resume />
+        </Flex>
       </div>
-
-      <Card style={{ marginTop: 16 }} title="Ant Design">
-        This card will switch themes.
-      </Card> */}
-    </div>
+      </div>
+    </>
   );
 }

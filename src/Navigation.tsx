@@ -15,8 +15,12 @@ export default function Navbar() {
         <div
             style={{
                 backgroundColor: token.colorBgContainer,
-                borderRadius: 10,
+                borderRadius: "0px 0px 10px 10px",
                 padding: "0 24px",
+                position: "sticky",
+                top: 0,
+                zIndex: 2000,
+                boxShadow: "0px 4px 12px rgba(0, 0, 0, 1)",
             }}
         >
             <Flex

@@ -1,0 +1,141 @@
+.exp-wrap {
+  position: relative;
+  height: 85vh;
+  width: 100%;
+  border-radius: 18px;
+  background: #0b0b0d;
+  overflow: hidden;
+}
+
+/* Center vertical cross line */
+.cross-vert {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  bottom: 8%;
+  width: 2px;
+  background: rgba(184, 95, 255, 0.55);
+  box-shadow: 0 0 18px rgba(184, 95, 255, 0.25);
+}
+
+/* Nodes */
+.node {
+  position: absolute;
+  left: calc(50% - 8px);
+  z-index: 200;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.55),
+    0 0 26px rgba(184, 95, 255, 0.35);
+}
+
+.node-top {
+  top: 18%;
+}
+
+.node-mid {
+  top: 54%;
+}
+
+/* Horizontal lines from nodes */
+.line {
+  position: absolute;
+  left: 50%;
+  height: 2px;
+  width: 260px;
+  background: rgba(184, 95, 255, 0.55);
+  box-shadow: 0 0 16px rgba(184, 95, 255, 0.25);
+}
+
+/* Brands (gradient text) */
+.brand {
+  position: absolute;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-size: clamp(54px, 7vw, 96px);
+  user-select: none;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.06));
+  opacity: 0.95;
+}
+
+/* Slots for cards */
+.slot {
+  position: absolute;
+}
+
+.slot-top-left {
+  left: 2.5%;
+  top: 4%;
+  width: min(760px, 52%);
+}
+
+.slot-bottom-right {
+  right: 2.5%;
+  top: 40%;
+  width: min(760px, 52%);
+}
+
+/* Glass card look */
+.glass-card {
+  border-radius: 14px;
+  background: rgba(10, 10, 12, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 10px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-card.empty {
+  min-height: 260px;
+}
+
+/* Typography */
+.glass-title {
+  margin-bottom: 0 !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.glass-subtitle {
+  display: block;
+  margin-bottom: 16px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Bullets */
+.glass-list {
+  margin: 0;
+  padding-left: 18px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.glass-list li {
+  margin: 10px 0;
+  line-height: 1.35;
+}
+
+/* Buttons */
+.glass-actions {
+  margin-top: 18px;
+}
+
+.btn-purple {
+  background: #6d28d9 !important;
+  border-color: #6d28d9 !important;
+  box-shadow: 0 0 14px rgba(109, 40, 217, 0.35);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+}

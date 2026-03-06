@@ -8,7 +8,9 @@ type Project = {
 };
 
 const projects: Project[] = [
-  { name: "HireUpp", image: "/magna.png", tags: ["React", "GoLang", "AWS"] },
+  { name: "HireUpp", image: "/magna.png",
+    desc:  
+    tags: ["React", "GoLang", "AWS"] },
   { name: "BidlyAuctions", image: "/magna.png", tags: ["Java", "SpringBoot", "Docker"] },
   { name: "Bookmark", image: "/magna.png", tags: ["Java", "SpringBoot", "SQL"] },
   { name: "Chatroom", image: "/magna.png", tags: ["Python", "Websockets"] },

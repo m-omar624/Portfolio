@@ -16,7 +16,7 @@ type Props = {
   contentFlexProps?: FlexProps
 }
 
-export default function ExperienceCard({
+export default function ProjectCard2({
   experienceName,
   image,
   selectedExperience,
@@ -34,12 +34,12 @@ export default function ExperienceCard({
   return (
     <div
       style={{
-        height: "87vh",
-        width: isSelected ? "300%" : "100%",
-        borderRadius: 0,
+        height: "70vh",
+        width: isSelected ? "130%" : "100%",
+        borderRadius: 6,
         transition:
           "width 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), filter 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), background-size 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)",
-        backgroundImage: `linear-gradient(to top, ${token.colorBgContainer} 0%, ${token.colorBgContainer} 60vh, rgba(255,255,255,0) 88%), url(${image})`,
+        backgroundImage: `linear-gradient(to top, ${token.colorBgContainer} 0%, ${token.colorBgContainer} 20%, rgba(255,255,255,0) 88%), url(${image})`,
         backgroundPosition: `bottom, calc(50% + ${offsetX}px) calc(50% + ${offsetY}px)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: isSelected ? "100% 100%, cover" : "100% 0%, cover",

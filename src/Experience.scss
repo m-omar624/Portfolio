@@ -1,141 +1,268 @@
-.exp-wrap {
+/* ── Experience Section ── */
+$card-bg: #14171a;
+$border-clr: #25282c;
+$spine-clr: #404449;
+$text-primary: #e6e8ea;
+$text-muted: #a0a4aa;
+$spine-width: 70px;
+
+.exp-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 96px 32px;
+}
+
+.exp-heading {
+  color: $text-primary !important;
+  margin-bottom: 48px !important;
+}
+
+/* ── Timeline wrapper ── */
+.exp-timeline {
   position: relative;
-  height: 85vh;
-  width: 100%;
-  border-radius: 18px;
-  background: #0b0b0d;
-  overflow: hidden;
 }
 
-/* Center vertical cross line */
-.cross-vert {
+/* ── Spine (vertical center line) ── */
+.spine {
   position: absolute;
   left: 50%;
-  top: 8%;
-  bottom: 8%;
+  top: 0;
+  bottom: 0;
   width: 2px;
-  background: rgba(184, 95, 255, 0.55);
-  box-shadow: 0 0 18px rgba(184, 95, 255, 0.25);
+  background: $spine-clr;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 
-/* Nodes */
-.node {
-  position: absolute;
-  left: calc(50% - 8px);
-  z-index: 200;
-  width: 18px;
-  height: 18px;
+/* ── Each timeline row ── */
+.exp-item {
+  display: grid;
+  grid-template-columns: 1fr $spine-width 1fr;
+  align-items: center;
+  position: relative;
+  min-height: 200px;
+  margin-bottom: 98px;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Node dot on the spine ── */
+.exp-node {
+  grid-column: 2;
+  justify-self: center;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow:
-    0 0 12px rgba(255, 255, 255, 0.55),
-    0 0 26px rgba(184, 95, 255, 0.35);
+  background: #fff;
+  box-shadow: 0 0 10px rgba(184, 95, 255, 0.4), 0 0 20px rgba(184, 95, 255, 0.15);
+  z-index: 2;
 }
 
-.node-top {
-  top: 18%;
+/* ── Content card ── */
+.exp-card {
+  background: $card-bg;
+  border: 1px solid $border-clr;
+  border-radius: 12px;
+  padding: 20px 24px;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.25s ease;
+
+  &:hover {
+    border-color: lighten($border-clr, 12%);
+  }
+
+  &__title {
+    color: $text-primary !important;
+    margin-bottom: 4px !important;
+  }
+
+  &__dates {
+    display: block;
+    color: $text-muted;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  &__desc {
+    color: $text-muted !important;
+    line-height: 1.6;
+    margin-bottom: 16px !important;
+  }
+
+  &__cta {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-color: $text-muted !important;
+    color: $text-primary !important;
+    background: transparent !important;
+    transition: border-color 0.2s, transform 0.2s;
+
+    &:hover {
+      border-color: #fff !important;
+      transform: scale(1.02);
+    }
+  }
+
+  &__empty {
+    min-height: 140px;
+  }
 }
 
-.node-mid {
-  top: 54%;
-}
-
-/* Horizontal lines from nodes */
-.line {
-  position: absolute;
-  left: 50%;
-  height: 2px;
-  width: 260px;
-  background: rgba(184, 95, 255, 0.55);
-  box-shadow: 0 0 16px rgba(184, 95, 255, 0.25);
-}
-
-/* Brands (gradient text) */
-.brand {
-  position: absolute;
+/* ── Company label (animated gradient + mouse spotlight) ── */
+.exp-label {
   font-weight: 800;
-  letter-spacing: 2px;
-  font-size: clamp(54px, 7vw, 96px);
+  letter-spacing: 3px;
+  font-size: clamp(28px, 6vw, 64px);
+  text-transform: uppercase;
   user-select: none;
-
+  z-index: 1;
+  white-space: nowrap;
+  /* Layer 1: mouse-follow spotlight using inherited CSS vars from section  */
+  /* Layer 2: shifting color cycle through blob palette                     */
+  background:
+    radial-gradient(
+      circle at var(--exp-mx, 50%) var(--exp-my, 50%),
+      rgba(var(--color-interactive), 1) 0%,
+      rgba(var(--color2), 0.6) 30%,
+      transparent 65%
+    ),
+    linear-gradient(
+      -45deg,
+      rgba(var(--color1), 1),
+      rgba(var(--color2), 1),
+      rgba(var(--color3), 1),
+      rgba(var(--color-interactive), 1),
+      rgba(var(--color1), 1)
+    );
+  background-size: 100% 100%, 300% 300%;
+  animation: blobTextShift 6s ease infinite;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.06));
-  opacity: 0.95;
+  -webkit-text-fill-color: transparent;
 }
 
-/* Slots for cards */
-.slot {
+@keyframes blobTextShift {
+  0%   { background-position: 0% 0%, 0% 50%; }
+  50%  { background-position: 0% 0%, 100% 50%; }
+  100% { background-position: 0% 0%, 0% 50%; }
+}
+
+/* ── Left-sided entries: card left, label right ── */
+.exp-item--left {
+  .exp-card {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    width: 90%;
+  }
+
+  .exp-node {
+    grid-row: 1;
+  }
+
+  .exp-label {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: start;
+    padding-left: 24px;
+  }
+}
+
+/* ── Right-sided entries: label left, card right ── */
+.exp-item--right {
+  .exp-card {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: start;
+    width: 90%;
+  }
+
+  .exp-node {
+    grid-row: 1;
+  }
+
+  .exp-label {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    text-align: right;
+    padding-right: 24px;
+  }
+}
+
+/* ── Connector pseudo-elements ── */
+.exp-item--left .exp-card::after,
+.exp-item--right .exp-card::before {
+  content: "";
   position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 2px;
+  background: $spine-clr;
 }
 
-.slot-top-left {
-  left: 2.5%;
-  top: 4%;
-  width: min(760px, 52%);
+.exp-item--left .exp-card::after {
+  right: -25px;
 }
 
-.slot-bottom-right {
-  right: 2.5%;
-  top: 40%;
-  width: min(760px, 52%);
+.exp-item--right .exp-card::before {
+  left: -25px;
 }
 
-/* Glass card look */
-.glass-card {
-  border-radius: 14px;
-  background: rgba(10, 10, 12, 0.72) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 10px 40px rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+/* ── Responsive: mobile ── */
+@media (max-width: 767px) {
+  .exp-section {
+    padding: 48px 16px;
+  }
+
+  .exp-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .spine {
+    left: 16px;
+  }
+
+  .exp-node {
+    align-self: flex-start;
+    margin-left: 10px;
+  }
+
+  .exp-item--left .exp-card,
+  .exp-item--right .exp-card {
+    width: 100%;
+    justify-self: unset;
+  }
+
+  .exp-item--left .exp-card::after,
+  .exp-item--right .exp-card::before {
+    display: none;
+  }
+
+  .exp-label {
+    font-size: clamp(24px, 8vw, 40px);
+    padding: 0 !important;
+    text-align: left !important;
+    justify-self: unset !important;
+  }
 }
 
-.glass-card.empty {
-  min-height: 260px;
-}
-
-/* Typography */
-.glass-title {
-  margin-bottom: 0 !important;
-  color: rgba(255, 255, 255, 0.92) !important;
-}
-
-.glass-subtitle {
-  display: block;
-  margin-bottom: 16px;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-/* Bullets */
-.glass-list {
-  margin: 0;
-  padding-left: 18px;
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.glass-list li {
-  margin: 10px 0;
-  line-height: 1.35;
-}
-
-/* Buttons */
-.glass-actions {
-  margin-top: 18px;
-}
-
-.btn-purple {
-  background: #6d28d9 !important;
-  border-color: #6d28d9 !important;
-  box-shadow: 0 0 14px rgba(109, 40, 217, 0.35);
-}
-
-.btn-ghost {
-  background: rgba(255, 255, 255, 0.04) !important;
-  border-color: rgba(255, 255, 255, 0.18) !important;
-  color: rgba(255, 255, 255, 0.82) !important;
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .exp-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

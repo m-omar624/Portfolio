@@ -1,38 +1,33 @@
-import { Viewer } from "@react-pdf-viewer/core";
-import "@react-pdf-viewer/core/lib/styles/index.css";
-import { theme } from "antd";
+import { Button, Typography } from "antd";
+import "./Resume.scss";
 
-import { GlobalWorkerOptions } from "pdfjs-dist";
-import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
-
-const { useToken } = theme;
-
-GlobalWorkerOptions.workerSrc = pdfWorker;
-
-export default function ResumeViewer() {
-  const { token } = useToken();
-
-  // Pick your own rule for "dark"
-  const isDark = token.colorBgContainer === "#141414";
-  const viewerTheme = isDark ? "dark" : "light"; // or "auto"
-
+export default function ResumeSection() {
   return (
-    <div
-      style={{
-        height: "100vh",
-        width: "76vw",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: token.colorBgContainer,
-      }}
-    >
-      <Viewer
-        theme={viewerTheme}
-        enableSmoothScroll
-        defaultScale={1.1}
-        fileUrl="/resume.pdf"
-      />
-    </div>
+    <section id="resume" className="resume-section">
+      <div className="resume-grid">
+        {/* Left: PDF preview thumbnail */}
+        <div className="resume-preview">
+          <div className="resume-preview__frame">
+            <div className="resume-preview__placeholder">
+              <Typography.Text className="resume-preview__text">Resume Preview</Typography.Text>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Download hero panel (blank background) */}
+        <div className="resume-hero">
+          <div className="resume-hero__content">
+            <Typography.Title level={1} className="resume-hero__heading">
+              DOWNLOAD<br />MY RESUME
+            </Typography.Title>
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" download>
+              <Button type="primary" size="large" className="resume-hero__btn">
+                Download Resume
+              </Button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

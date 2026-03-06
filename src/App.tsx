@@ -5,6 +5,7 @@ import Landing from "./Landing";
 import Experience from "./Experience";
 import Projects from "./Projects";
 import Resume from "./Resume";
+import Contact from "./Contact";
 
 export default function App() {
   const { token } = theme.useToken();
@@ -89,6 +90,7 @@ export default function App() {
           <Experience />
           <Projects />
           <Resume />
+          <Contact />
         </Flex>
       </div>
       </div>

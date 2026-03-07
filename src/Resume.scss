@@ -1,22 +1,10 @@
-/* ── Resume Section ── */
-$card-bg: #14171a;
-$border-clr: #25282c;
-$text-primary: #e6e8ea;
-$text-muted: #a0a4aa;
 
 .resume-section {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 96px 32px;
+  padding: 0px 0px;
 }
 
-.resume-grid {
-  display: grid;
-  grid-template-columns: 45% 1fr;
-  gap: 32px;
-  align-items: center;
-  min-height: 500px;
-}
 
 /* ── Left: Preview card ── */
 .resume-preview {
@@ -24,50 +12,19 @@ $text-muted: #a0a4aa;
   justify-content: center;
 }
 
-.resume-preview__frame {
-  width: 100%;
-  max-width: 380px;
-  aspect-ratio: 1 / 1.414; /* A4 */
-  border-radius: 12px;
-  border: 1px solid $border-clr;
-  background: $card-bg;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.resume-preview__placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background: #1a1d21;
-}
-
-.resume-preview__text {
-  color: $text-muted !important;
-  font-size: 16px;
-}
 
 /* ── Right: Hero panel (blank background) ── */
 .resume-hero {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  border-radius: 12px;
+  height: -50%;
   padding: 40px;
 }
 
-.resume-hero__content {
-  text-align: right;
-}
-
 .resume-hero__heading {
-  color: $text-primary !important;
-  font-size: clamp(32px, 5vw, 60px) !important;
+  font-size: clamp(48px, 7.5vw, 90px) !important;
   font-weight: 800 !important;
   letter-spacing: 2px;
   line-height: 1.1 !important;

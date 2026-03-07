@@ -5,6 +5,7 @@ import Landing from "./Landing";
 import Experience from "./Experience";
 import Projects from "./Projects";
 import Resume from "./Resume";
+import AboutMe from "./components/AboutMe";
 import Contact from "./Contact";
 
 export default function App() {
@@ -90,6 +91,7 @@ export default function App() {
           <Experience />
           <Projects />
           <Resume />
+          <AboutMe />
           <Contact />
         </Flex>
       </div>

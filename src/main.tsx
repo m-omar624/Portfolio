@@ -6,7 +6,7 @@ import "antd/dist/reset.css";
 import "./style.scss"; // ✅ bring in your background styles
 
 function Root() {
-  const [dark, setDark] = React.useState(false);
+  const [dark, setDark] = React.useState(true);
 
   React.useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(dark));

@@ -1,4 +1,5 @@
-import { Card, Flex, Typography, Tag } from "antd";
+import { Card, Flex, Typography, Tag, Button } from "antd";
+import { GithubOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import ExperienceCard from "./components/ProjectCard2";
 import SkillScroller from "./components/SkillScroller";
@@ -72,15 +73,25 @@ export default function Projects() {
           {/* ── Magna · HireUpp ─────────────────────────── */}
           <ExperienceCard
             experienceName="HireUpp"
-            image="/magna.png"
-            offsetX={10}
+            image="/Projects/HireUpp.jpg"
+            offsetX={0}
             selectedExperience={selectedExperience}
             setSelectedExperience={setSelectedExperience}
           >
             <div style={cardBottom}>
               <div style={glass}>
-                <Typography.Title level={3} style={cardTitle}>HireUpp</Typography.Title>
-                <span style={cardSubtitle}>Person Project</span>
+                <Flex gap={4} style={{ width: "100%", justifyContent: "space-between", alignItems: "center" }}>
+                  <Typography.Title level={3} style={cardTitle}>HireUpp</Typography.Title>
+                  <Button
+                    size="large"
+                    type="text"
+                    icon={<GithubOutlined style={{ fontSize: 22 }} />}>
+
+                  </Button>
+
+                </Flex>
+                <span style={cardSubtitle}>Personal Project</span>
+
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
                   {HireUppTags.map(tag => (
                     <Tag key={tag} style={{ margin: 0, fontSize: 11 }}>{tag}</Tag>
@@ -98,17 +109,25 @@ export default function Projects() {
             </div>
           </ExperienceCard>
 
-                    <ExperienceCard
+          <ExperienceCard
             experienceName="BidlyAuctions"
-            image="/magna.png"
-            offsetX={10}
+            image="/Projects/Bidly.jpg"
+            offsetX={0}
             selectedExperience={selectedExperience}
             setSelectedExperience={setSelectedExperience}
           >
             <div style={cardBottom}>
               <div style={glass}>
-                <Typography.Title level={3} style={cardTitle}>BidlyAuctions</Typography.Title>
-                <span style={cardSubtitle}>Course Project</span>
+                <Flex gap={4} style={{ width: "100%", justifyContent: "space-between", alignItems: "center" }}>
+                  <Typography.Title level={3} style={cardTitle}>Bidly Auctions</Typography.Title>
+                  <Button
+                    size="large"
+                    type="text"
+                    icon={<GithubOutlined style={{ fontSize: 22 }} />}>
+
+                  </Button>
+
+                </Flex>                <span style={cardSubtitle}>Course Project</span>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
                   {BidlyTags.map(tag => (
                     <Tag key={tag} style={{ margin: 0, fontSize: 11 }}>{tag}</Tag>
@@ -126,17 +145,25 @@ export default function Projects() {
             </div>
           </ExperienceCard>
 
-                    <ExperienceCard
+          <ExperienceCard
             experienceName="Bookmark"
-            image="/magna.png"
-            offsetX={10}
+            image="/Projects/Bookmark.jpg"
+            offsetX={0}
             selectedExperience={selectedExperience}
             setSelectedExperience={setSelectedExperience}
           >
             <div style={cardBottom}>
               <div style={glass}>
-                <Typography.Title level={3} style={cardTitle}>Bookmark</Typography.Title>
-                <span style={cardSubtitle}>Course Project</span>
+                <Flex gap={4} style={{ width: "100%", justifyContent: "space-between", alignItems: "center" }}>
+                  <Typography.Title level={3} style={cardTitle}>Bookmark</Typography.Title>
+                  <Button
+                    size="large"
+                    type="text"
+                    icon={<GithubOutlined style={{ fontSize: 22 }} />}>
+
+                  </Button>
+
+                </Flex>                <span style={cardSubtitle}>Course Project</span>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
                   {BookMarkTags.map(tag => (
                     <Tag key={tag} style={{ margin: 0, fontSize: 11 }}>{tag}</Tag>
@@ -154,17 +181,25 @@ export default function Projects() {
             </div>
           </ExperienceCard>
 
-                    <ExperienceCard
+          <ExperienceCard
             experienceName="Secure Chatroom"
-            image="/magna.png"
-            offsetX={10}
+            image="/Projects/SecureChat.jpg"
+            offsetX={0}
             selectedExperience={selectedExperience}
             setSelectedExperience={setSelectedExperience}
           >
             <div style={cardBottom}>
               <div style={glass}>
-                <Typography.Title level={3} style={cardTitle}>Secure Chatroom</Typography.Title>
-                <span style={cardSubtitle}>Course Project</span>
+                <Flex gap={4} style={{ width: "100%", justifyContent: "space-between", alignItems: "center" }}>
+                  <Typography.Title level={3} style={cardTitle}>Secure Chatroom</Typography.Title>
+                  <Button
+                    size="large"
+                    type="text"
+                    icon={<GithubOutlined style={{ fontSize: 22 }} />}>
+
+                  </Button>
+
+                </Flex>                <span style={cardSubtitle}>Course Project</span>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
                   {SecureChatroomTags.map(tag => (
                     <Tag key={tag} style={{ margin: 0, fontSize: 11 }}>{tag}</Tag>
@@ -182,17 +217,25 @@ export default function Projects() {
             </div>
           </ExperienceCard>
 
-                    <ExperienceCard
+          <ExperienceCard
             experienceName="Tether"
-            image="/magna.png"
-            offsetX={10}
+            image="/Projects/Tether.jpg"
+            offsetX={0}
             selectedExperience={selectedExperience}
             setSelectedExperience={setSelectedExperience}
           >
             <div style={cardBottom}>
               <div style={glass}>
-                <Typography.Title level={3} style={cardTitle}>Tether</Typography.Title>
-                <span style={cardSubtitle}>Personal Project</span>
+                <Flex gap={4} style={{ width: "100%", justifyContent: "space-between", alignItems: "center" }}>
+                  <Typography.Title level={3} style={cardTitle}>Tether</Typography.Title>
+                  <Button
+                    size="large"
+                    type="text"
+                    icon={<GithubOutlined style={{ fontSize: 22 }} />}>
+
+                  </Button>
+
+                </Flex>                <span style={cardSubtitle}>Personal Project</span>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8 }}>
                   {TetherTags.map(tag => (
                     <Tag key={tag} style={{ margin: 0, fontSize: 11 }}>{tag}</Tag>

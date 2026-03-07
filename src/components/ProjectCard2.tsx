@@ -1,4 +1,4 @@
-import { Flex, theme, type FlexProps } from "antd"
+import { Flex, theme, Typography, type FlexProps } from "antd"
 import type { ReactNode } from "react"
 
 const {useToken} = theme 
@@ -34,23 +34,25 @@ export default function ProjectCard2({
   return (
     <div
       style={{
-        height: "70vh",
+        height: isSelected ? "70vh" : "70vh",
         width: isSelected ? "130%" : "100%",
         borderRadius: 6,
         transition:
           "width 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), filter 0.5s cubic-bezier(0.075, 0.82, 0.165, 1), background-size 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)",
-        backgroundImage: `linear-gradient(to top, ${token.colorBgContainer} 0%, ${token.colorBgContainer} 20%, rgba(255,255,255,0) 88%), url(${image})`,
+        backgroundImage: `linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, rgba(255,255,255,0) 88%), url(${image})`,
         backgroundPosition: `bottom, calc(50% + ${offsetX}px) calc(50% + ${offsetY}px)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: isSelected ? "100% 100%, cover" : "100% 0%, cover",
         padding: 0,
         filter: isOtherSelected ? "brightness(0.45)" : "brightness(1)",
         position: "relative",
-        overflow: "hidden"
+        overflow: "hidden",
+        boxShadow: isSelected ? "0 8px 24px rgba(0, 0, 0, 0.5)" : "0 0px 6px rgba(0, 0, 0, 0.5)",
       }}
       onMouseEnter={() => setSelectedExperience(experienceName)}
       onMouseLeave={() => setSelectedExperience("")}
     >
+
       {logo && (
         <div
           style={{

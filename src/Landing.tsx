@@ -16,6 +16,7 @@ export default function Landing() {
                      padding: 10,
                      opacity:1,
                      background:"none"}}>
+                <div id="landing-hero" style={{ position: 'absolute', top: 0, left: 0, width: 1, height: 1 }} />
                 <Flex style={{ marginBlock: 30 }} gap={60}>
 
                     {/* Left Section */}
@@ -58,10 +59,14 @@ export default function Landing() {
                         </Typography.Text>
 
                         <Flex gap={16} style={{ marginTop: 40 }}>
-                            <Button size="large" type="primary"
-                            color="purple"
-                            style={{ boxShadow:"0px 0px 10px 0px rgba(0, 0, 0, 0.5)"}}>Download Resume</Button>
-                            <Button size="large" type="default">More About Me</Button>
+                            <a href="/resume.pdf" download style={{ textDecoration: 'none' }}>
+                                <Button size="large" type="primary" color="purple"
+                                    style={{ boxShadow:"0px 0px 10px 0px rgba(0, 0, 0, 0.5)"}}>Download Resume</Button>
+                            </a>
+                            <Button size="large" type="default"
+                                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
+                                More About Me
+                            </Button>
                         </Flex>
                     </Flex>
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { theme, Flex } from "antd";
 import Navigation from "./Navigation";
 import Landing from "./Landing";
@@ -10,6 +10,7 @@ import Contact from "./Contact";
 
 export default function App() {
   const { token } = theme.useToken();
+  const [demoOpen, setDemoOpen] = useState(false);
   useEffect(()=>{
     // Initialize interactive bubble after component mounts.
     // Avoid relying on DOMContentLoaded (may have already fired).
@@ -74,7 +75,7 @@ export default function App() {
           backgroundColor: token.colorBgBase,
         }}
       >
-                  <Navigation />
+                  <Navigation onItemClick={() => setDemoOpen(false)} />
               <div
         style={{
           minHeight: "100vh",
@@ -88,7 +89,7 @@ export default function App() {
         <Flex vertical gap={6}>
 
           <Landing />
-          <Experience />
+          <Experience demoOpen={demoOpen} setDemoOpen={setDemoOpen} />
           <Projects />
           <Resume />
           <AboutMe />

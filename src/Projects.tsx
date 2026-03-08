@@ -2,7 +2,6 @@ import { Card, Flex, Typography, Tag, Button } from "antd";
 import { GithubOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import ExperienceCard from "./components/ProjectCard2";
-import SkillScroller from "./components/SkillScroller";
 
 const glass: React.CSSProperties = {
   background: "rgba(0,0,0,0.48)",
@@ -63,11 +62,11 @@ const TetherTags = [
 ];
 
 export default function Projects() {
-  const [selectedExperience, setSelectedExperience] = useState<string>("Magna");
+  const [selectedExperience, setSelectedExperience] = useState<string>("");
 
   return (
     <>
-      <Card size="small">
+      <Card id="projects" size="small">
         <Flex style={{ margin: 0 }} gap={10}>
 
           {/* ── Magna · HireUpp ─────────────────────────── */}

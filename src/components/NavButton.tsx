@@ -17,7 +17,7 @@ export default function NavButton({
       onClick={onClick}
       className="nav-button"
       style={{
-        color: token.colorText,
+        color: "rgba(255, 255, 255, 0.8)",
       }}
     >
       {content}

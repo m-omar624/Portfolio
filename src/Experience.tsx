@@ -1,335 +1,189 @@
+import { Button, Card, Divider, Flex, Typography } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { Button, Card, Flex, Typography } from "antd";
 
-// const entries: ExperienceEntry[] = [
-//   {
-//     side: "left",
-//     company: "MAGNA",
-//     title: "Software Engineer \u2013 Coop",
-//     dates: "May 2025 \u2013 May 2026",
-//     description:
-//       "Worked as a software engineer, collaborating with global teams to develop 2 applications and maintain 2 others. Gained experience in the full software development lifecycle, from design to deployment, and contributed to projects using Python, React, Three.js and Azure.",
-//   },
-//   {
-//     side: "right",
-//     company: "BOND",
-//         title: "Full Stack Developer",
-//     dates: "September 2024 \u2013 April 2025",
-//     description:
-//       "Worked as a full stack developer, communicating with both clients and team members to develop an enterprise application for report generation and manipulation of client data",
-//   },
-//   {
-//     side: "left",
-//     company: "theScore",
-//     title: "QA Analyst / Automation \u2013 Coop",
-//     dates: "January 2024 \u2013 September 2024",
-//     description:
-//       "Conducted manual and automated testing for theScore and ESPN apps on web and mobile platforms. Participated in production level testing and automated testing on workflows and firebase functions using JavaScript.",
-//   },
-//   {
-//     side: "right",
-//     company: "SellStatic",
-//     title: "Software Developer \u2013 Internship",
-//     dates: "September 2023 \u2013 January 2024",
-//     description:
-//       "Worked as a software engineer, developing the website ranking system, and setting up core functionality for the SellStatic Dashboard App. Wired up AI pipeline and various AWS features ensure scalability and maintainability.",
-//   },
-// ];
+function useFadeInOnScroll<T extends HTMLElement>() {
+    const ref = useRef<T>(null);
+    const [visible, setVisible] = useState(false);
 
-import "./Experience.scss";
-import InteractiveDemo from "./components/InteractiveDemo";
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+            { threshold: 0.15 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
 
-export default function Experience({ demoOpen, setDemoOpen }: { demoOpen: boolean; setDemoOpen: (v: boolean) => void }) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [workContent, setWorkContent] = useState<Record<string, 'original' | 'work'>>({});
-  const [workVisible, setWorkVisible] = useState<Record<string, boolean>>({});
+    return { ref, visible };
+}
 
-  const handleMyWork = (id: string) => {
-    setWorkVisible((p) => ({ ...p, [id]: false }));
-    setTimeout(() => {
-      setWorkContent((p) => ({ ...p, [id]: 'work' }));
-      requestAnimationFrame(() =>
-        requestAnimationFrame(() =>
-          setWorkVisible((p) => ({ ...p, [id]: true }))
-        )
-      );
-    }, 400);
-  };
 
-  // Scroll-reveal
-  useEffect(() => {
-    const els = sectionRef.current?.querySelectorAll<HTMLElement>(".exp-item");
-    if (!els) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting)
-            (e.target as HTMLElement).classList.add("visible");
-        });
-      },
-      { threshold: 0.15 },
+export default function Experience() {
+    const card1 = useFadeInOnScroll<HTMLDivElement>();
+    const Point = () => (
+        <div style={{ position: "relative", width: 20, height: 20, flexShrink: 0 }}>
+            <div style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                border: "1px solid rgba(255,255,255,0.5)",
+                animation: "indicatorPulse 2.2s ease-out infinite",
+            }} />
+            <div style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.9)",
+                boxShadow: "0 0 6px rgba(255,255,255,0.5)",
+            }} />
+        </div>
     );
-    els.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
-  // Smooth mouse-follow spotlight (lerp, same as landing interactive bubble)
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const Break = () => (
+        <div style={{
+            height: 2,
+            margin: "18px 0",
+            borderRadius: 10,
+            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+        }} />
+    )
+    return (
+        <div style={{
+            padding: "20px", backgroundColor: "rgba(0, 0, 0, 1)",
+            paddingInline: "20vw",
+        }}>
+            <style>{`
+                @keyframes indicatorPulse {
+                    0% { transform: scale(0.5); opacity: 0.7; }
+                    100% { transform: scale(1); opacity: 0; }
+                }
+            `}</style>
+            <Flex vertical gap={12}>
 
-    let rafId: number;
-    let curX = 50,
-      curY = 50,
-      tgX = 50,
-      tgY = 50;
-
-    function tick() {
-      curX += (tgX - curX) / 20;
-      curY += (tgY - curY) / 20;
-      section!.style.setProperty("--exp-mx", `${curX.toFixed(2)}%`);
-      section!.style.setProperty("--exp-my", `${curY.toFixed(2)}%`);
-      rafId = requestAnimationFrame(tick);
-    }
-
-    const onMouse = (e: MouseEvent) => {
-      const rect = section.getBoundingClientRect();
-      tgX = ((e.clientX - rect.left) / rect.width) * 100;
-      tgY = ((e.clientY - rect.top) / rect.height) * 100;
-    };
-
-    window.addEventListener("mousemove", onMouse);
-    rafId = requestAnimationFrame(tick);
-    return () => {
-      window.removeEventListener("mousemove", onMouse);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  return (
-    <>
-    <Card style={{zIndex:1}}>
-    <section id="experience" className="exp-section" ref={sectionRef}>
-
-      <div className="exp-timeline">
-        {/* Spine */}
-        <div className="spine" aria-hidden="true" />
-
-        <div
-          key={"magna"}
-          className={`exp-item exp-item--left`}
-          style={{
-            transition: 'opacity 0.4s',
-            opacity: workVisible['magna'] === false ? 0 : 1,
-            ...(workContent['magna'] === 'work' ? { display: 'block' } : {}),
-          }}
-        >
-          {workContent['magna'] !== 'work' ? (
-            <>
-              {/* Node on the spine */}
-              <div className="exp-node" aria-hidden="true" />
-              {/* Content card */}
-              <div className="exp-card">
-                <Typography.Title level={4} className="exp-card__title">
-                  {`Software Engineer \u2013 Coop`}
-                </Typography.Title>
-                <Typography.Text className="exp-card__dates">
-                  {`May 2025 \u2013 May 2026`}
-                </Typography.Text>
-                <Typography.Paragraph className="exp-card__desc">
-                  Worked as a software engineer, collaborating with global teams
-                  to develop 2 applications and maintain 2 others. Gained
-                  experience in the full software development lifecycle, from
-                  design to deployment, and contributed to projects using Python,
-                  React, Three.js and Azure.
-                </Typography.Paragraph>
-                <Flex gap={10}>
-                  <Button
-                    style={{ padding: "20px 24px", textTransform: "uppercase", letterSpacing: "1px" }}
-                    onClick={() => handleMyWork('magna')}
-                  >
-                    My Work
-                  </Button>
-                  <Button
-                    style={{ padding: "20px 24px", textTransform: "uppercase", letterSpacing: "1px" }}
-                    onClick={() => setDemoOpen(true)}
-                  >
-                    Interactive Demo
-                  </Button>
+                <Flex gap={10} align="center" justify="flex-start">
+                    <img src="/Magna/Logo.png" style={{ width: "35px", height: "35px" }}></img>
+                    <Typography.Title level={1} style={{ color: "rgba(255,255,255,0.9)", marginTop: 24 }}>Magna International</Typography.Title>
                 </Flex>
-              </div>
-              {/* Company label */}
-              <div className="exp-label">MAGNA</div>
-            </>
-          ) : (
-            <>
-              <Flex justify="flex-end" style={{ width: '100%', padding: '12px 0 8px' }}>
-                <Button
-                  size="small"
-                  style={{ textTransform: 'uppercase', letterSpacing: '1px' }}
-                  onClick={() => {
-                    setWorkVisible((p) => ({ ...p, magna: false }));
-                    setTimeout(() => {
-                      setWorkContent((p) => ({ ...p, magna: 'original' as const }));
-                      requestAnimationFrame(() => requestAnimationFrame(() =>
-                        setWorkVisible((p) => ({ ...p, magna: true }))
-                      ));
-                    }, 400);
-                  }}
-                >
-                  ← Back
-                </Button>
-              </Flex>
-              <Flex gap={12} style={{ width: '100%', padding: '0 0 16px' }}>
-                <Card style={{ flex: 1 }}>
-                  <Typography.Title level={5}>Project One</Typography.Title>
-                  <Typography.Text type="secondary">Placeholder description for the first project.</Typography.Text>
-                </Card>
-                <Card style={{ flex: 1 }}>
-                  <Typography.Title level={5}>Project Two</Typography.Title>
-                  <Typography.Text type="secondary">Placeholder description for the second project.</Typography.Text>
-                </Card>
-                <Card style={{ flex: 1 }}>
-                  <Typography.Title level={5}>Project Three</Typography.Title>
-                  <Typography.Text type="secondary">Placeholder description for the third project.</Typography.Text>
-                </Card>
-              </Flex>
-            </>
-          )}
-        </div>
 
-        <div key={"bond"} className={`exp-item exp-item--right`}>
-          {/* Node on the spine */}
-          <div className="exp-node" aria-hidden="true" />
-
-          {/* Content card */}
-          <div className="exp-card">
-            <>
-              <Typography.Title level={4} className="exp-card__title">
-                Full Stack Developer
-              </Typography.Title>
-              <Typography.Text className="exp-card__dates">
-                {`September 2024 \u2013 April 2025`}
-              </Typography.Text>
-              <Typography.Paragraph className="exp-card__desc">
-                Worked as a full stack developer, communicating with both
-                clients and team members to develop an enterprise application
-                for report generation and manipulation of client data.
-              </Typography.Paragraph>
-            </>
-          </div>
-
-          {/* Company label with animated gradient text */}
-          <div className="exp-label">BOND</div>
-        </div>
-
-        <div
-          key={"theScore"}
-          className={`exp-item exp-item--left`}
-          style={{
-            transition: 'opacity 0.4s',
-            opacity: workVisible['thescore'] === false ? 0 : 1,
-            ...(workContent['thescore'] === 'work' ? { display: 'block' } : {}),
-          }}
-        >
-          {workContent['thescore'] !== 'work' ? (
-            <>
-              {/* Node on the spine */}
-              <div className="exp-node" aria-hidden="true" />
-              {/* Content card */}
-              <div className="exp-card">
-                <Typography.Title level={4} className="exp-card__title">
-                  {`QA Analyst / Automation \u2013 Coop`}
-                </Typography.Title>
-                <Typography.Text className="exp-card__dates">
-                  {`January 2024 \u2013 September 2024`}
-                </Typography.Text>
-                <Typography.Paragraph className="exp-card__desc">
-                  Conducted manual and automated testing for theScore and ESPN
-                  apps on web and mobile platforms. Participated in production
-                  level testing and automated testing on workflows and firebase
-                  functions using JavaScript.
-                </Typography.Paragraph>
                 <Flex gap={10}>
-                  <Button
-                    style={{ padding: "20px 24px", textTransform: "uppercase", letterSpacing: "1px" }}
-                    onClick={() => handleMyWork('thescore')}
-                  >
-                    My Work
-                  </Button>
+                    <div ref={card1.ref} style={{
+                        opacity: card1.visible ? 1 : 0,
+                        transform: card1.visible ? "translateY(0)" : "translateY(24px)",
+                        transition: "opacity 480ms ease, transform 440ms cubic-bezier(0.2, 0.9, 0.18, 1)",
+                        background: "rgba(255,255,255,0.04)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        width: "70%",
+                    }}>
+                        <Flex vertical gap={0} style={{ padding: 20 }}>
+
+                            <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginBottom: 0 }}>{`Software Developer \u2013 Coop`}</Typography.Title>
+                            <Flex align="center" gap={8} style={{ marginBottom: 10 }}>
+                                <Typography.Text style={{ color: "rgba(255,255,255,0.45)" }}>May 2025 - May 2026</Typography.Text>
+                            </Flex>
+                            <Typography.Text style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginBottom: 0 }}>
+                                Worked as a Full Stack Developer on the MML (Mechatronics, Mirrors, & Lighting) team working with global teams
+                                to develop internal process improvement and automation tools using Python and React. Developed and maintained
+                                tools revolving around vehicle part design, data organization, testing platforms and simulation visualization.
+                            </Typography.Text>
+                            <Break />
+                            <Flex vertical gap={12}>
+                                <Flex gap={6} align="center" >
+                                    <Point />
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.9)", fontSize: 12 }}>
+                                        Developed a 3D rendering engine in Three.js to visualize and review multi-body dynamics simulation results
+                                        and models, enabling engineers and designers convenient access to 25% of Magna MML’s product simulation data.
+                                    </Typography.Text>
+                                </Flex>
+
+                                <Flex gap={6}>
+                                    <Point />
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.9)", fontSize: 12 }}>
+                                        Proposed and implemented a full-scale security solution, encompassing token API, EntraID, rate limiting, CSP,
+                                        service filters, etc.
+                                    </Typography.Text>
+                                </Flex>
+                            </Flex>
+                        </Flex>
+                        <Break />
+                        <Flex align="center" justify="flex-end" gap={12} style={{ padding: 20 }}>
+                            <Button style={{
+                                background: "rgba(255,255,255,0.04)",
+                                border: "1px solid rgba(255,255,255,0.08)",
+                                color: "rgba(255,255,255,0.9)"
+                            }}>My Work</Button>
+                            <Button style={{
+                                background: "rgba(255,255,255,0.04)",
+                                border: "1px solid rgba(255,255,255,0.08)",
+                                color: "rgba(255,255,255,0.9)"
+                            }}>Interactive</Button>
+
+                        </Flex>
+
+                    </div>
+                    <Flex vertical gap={10} style={{ width: "30%" }}>
+                        <div ref={card1.ref} style={{
+                            opacity: card1.visible ? 1 : 0,
+                            transform: card1.visible ? "translateY(0)" : "translateY(24px)",
+                            transition: "opacity 480ms ease, transform 440ms cubic-bezier(0.2, 0.9, 0.18, 1)",
+                            background: "rgba(255,255,255,0.04)",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            width: "100%",
+                        }}>
+                            <Flex vertical gap={0} style={{ padding: 20 }}>
+
+                                <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginBottom: 0 }}>{`Mechatronics, Mirrors, & Lighting`}</Typography.Title>
+
+                            </Flex>
+
+                            <img src="/Magna/car.png" style={{ width: "100%" }}></img>
+                        </div>
+
+                        <div ref={card1.ref} style={{
+                            opacity: card1.visible ? 1 : 0,
+                            transform: card1.visible ? "translateY(0)" : "translateY(24px)",
+                            transition: "opacity 480ms ease, transform 440ms cubic-bezier(0.2, 0.9, 0.18, 1)",
+                            background: "rgba(255,255,255,0.04)",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            width: "100%",
+                        }}>
+                            <Flex vertical gap={0} style={{ padding: 20 }}>
+
+                                <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginBottom: 0 }}>{`My Time at Magna`}</Typography.Title>
+                                <Typography.Text style={{ color: "rgba(255,255,255,0.9)", fontSize: 12, marginBottom: 0 }}>
+                                    Magna has been my best experience to date, 
+                                </Typography.Text>
+                            </Flex>
+                            <Break />
+                            <Flex align="center" justify="flex-end" gap={12} style={{ padding: 20 }}>
+                                <Button style={{
+                                    background: "rgba(255,255,255,0.04)",
+                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    color: "rgba(255,255,255,0.9)"
+                                }}>My Work</Button>
+                                <Button style={{
+                                    background: "rgba(255,255,255,0.04)",
+                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    color: "rgba(255,255,255,0.9)"
+                                }}>Interactive</Button>
+
+                            </Flex>
+                        </div>
+                    </Flex>
+
                 </Flex>
-              </div>
-              {/* Company label */}
-              <div className="exp-label">THESCORE</div>
-            </>
-          ) : (
-            <>
-              <Flex justify="flex-end" style={{ width: '100%', padding: '12px 0 8px' }}>
-                <Button
-                  size="small"
-                  style={{ textTransform: 'uppercase', letterSpacing: '1px' }}
-                  onClick={() => {
-                    setWorkVisible((p) => ({ ...p, thescore: false }));
-                    setTimeout(() => {
-                      setWorkContent((p) => ({ ...p, thescore: 'original' as const }));
-                      requestAnimationFrame(() => requestAnimationFrame(() =>
-                        setWorkVisible((p) => ({ ...p, thescore: true }))
-                      ));
-                    }, 400);
-                  }}
-                >
-                  ← Back
-                </Button>
-              </Flex>
-              <Flex gap={12} style={{ width: '100%', padding: '0 0 16px' }}>
-                <Card style={{ flex: 1 }}>
-                  <Typography.Title level={5}>Project One</Typography.Title>
-                  <Typography.Text type="secondary">Placeholder description for the first project.</Typography.Text>
-                </Card>
-                <Card style={{ flex: 1 }}>
-                  <Typography.Title level={5}>Project Two</Typography.Title>
-                  <Typography.Text type="secondary">Placeholder description for the second project.</Typography.Text>
-                </Card>
-                <Card style={{ flex: 1 }}>
-                  <Typography.Title level={5}>Project Three</Typography.Title>
-                  <Typography.Text type="secondary">Placeholder description for the third project.</Typography.Text>
-                </Card>
-              </Flex>
-            </>
-          )}
+
+
+
+
+
+            </Flex>
+
         </div>
-
-                <div key={"Sellstatic"} className={`exp-item exp-item--right`} style={{marginBottom:0}}>
-          {/* Node on the spine */}
-          <div className="exp-node" aria-hidden="true" />
-
-          {/* Content card */}
-          <div className="exp-card" style={{paddingBottom:0}}>
-            <>
-              <Typography.Title level={4} className="exp-card__title">
-                {`Software Developer \u2013 Internship`}
-              </Typography.Title>
-              <Typography.Text className="exp-card__dates">
-                {`September 2023 \u2013 January 2024`}
-              </Typography.Text>
-              <Typography.Paragraph className="exp-card__desc">
-                Worked as a software engineer, developing the website ranking system, 
-                and setting up core functionality for the SellStatic Dashboard App. Wired 
-                up AI pipeline and various AWS features ensure scalability and maintainability.
-              </Typography.Paragraph>
-            </>
-          </div>
-
-          {/* Company label with animated gradient text */}
-          <div className="exp-label">SELLSTATIC</div>
-        </div>
-      </div>
-    </section>
-    </Card>
-
-    {demoOpen && (
-      <InteractiveDemo onClose={() => setDemoOpen(false)} />
-    )}
-    </>
-  );
+    )
 }

@@ -1,119 +1,63 @@
-import { Button, Flex, Typography, Image, theme, Card } from "antd"
-const { useToken } = theme
+import WireframeBackground from "./components/WireframeBackground"
+import Entry from "./components/Entry";
+import { useEffect, useState } from "react";
+
 export default function Landing() {
-    const { token } = useToken()
+    const [showSlogan, setShowSlogan] = useState(true)
+    const [showName, setShowName] = useState(false)
+    const [showSummary, setShowSummary] = useState(false)
+
+    useEffect(() => {
+        const t1 = setTimeout(() => setShowSlogan(false), 4500)
+        const t2 = setTimeout(() => setShowName(true), 5000)
+        const t3 = setTimeout(() => setShowSummary(true), 7000)
+        return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
+    }, [])
+
     return (
-        <>
-                <Card style={{
-                    zIndex: 100, 
-                    width: "98vw", 
-                    height: "90.2vh", 
-                    position: "absolute",
-                     top: 0,
-                     left:0,
-                     justifyContent: "center",
-                     alignItems: "center",
-                     padding: 10,
-                     opacity:1,
-                     background:"none"}}>
-                <div id="landing-hero" style={{ position: 'absolute', top: 0, left: 0, width: 1, height: 1 }} />
-                <Flex style={{ marginBlock: 30 }} gap={60}>
+        <div style={{ position: "relative", height: "100vh", overflow: "hidden", background: "#050a12" }}>
+            <WireframeBackground />
 
-                    {/* Left Section */}
-
-                    <Flex
-                        vertical
-                        gap={0}
-                        align="center"
-                        justify="flex-start"
-                        style={{
-                            flex: 1,
-                            marginLeft: 30,
-                            height: "78vh",
-                            paddingTop: 80,   // 👈 pushes text downward
-                        }}
-                    >
-                        <Typography.Title
-                            level={1}
-                            style={{
-                                fontSize: 70,
-                                fontWeight: 700,
-                                textAlign: "left",
-                            }}
-                        >
-                            Providing Enterprise Solutions for Industry Problems.
-                        </Typography.Title>
-
-                        <Typography.Text
-                            style={{
-                                fontSize: 22,
-                                textAlign: "center",
-                                fontFamily: "sans-serif",
-                                color: token.colorTextLabel,
-                            }}
-                        >
-                            A dedicated Software Developer, with 2.5 years of experience developing
-                            web applications and large scale enterprise solutions. I aim to digitize
-                            the industries that our world is built upon. Explore my latest experience
-                            and projects showcasing my skills in full stack development.
-                        </Typography.Text>
-
-                        <Flex gap={16} style={{ marginTop: 40 }}>
-                            <a href="/resume.pdf" download style={{ textDecoration: 'none' }}>
-                                <Button size="large" type="primary" color="purple"
-                                    style={{ boxShadow:"0px 0px 10px 0px rgba(0, 0, 0, 0.5)"}}>Download Resume</Button>
-                            </a>
-                            <Button size="large" type="default"
-                                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
-                                More About Me
-                            </Button>
-                        </Flex>
-                    </Flex>
-
-                    {/* Right Section */}
-                    <Flex
-                        align="center"
-                        justify="center"
-                        style={{ flex: 1 }}
-                    >
-                        <Image
-                            style={{ maxWidth: "80%", height: "auto", marginLeft: 70 }}
-                            src="/landing.png"
-                            preview={false}
-                        />
-                    </Flex>
-
-                </Flex>
-            </Card>
-
-            <div className="gradient-bg" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <filter id="goo">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                            <feColorMatrix
-                                in="blur"
-                                mode="matrix"
-                                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
-                                result="goo"
-                            />
-                            <feBlend in="SourceGraphic" in2="goo" />
-                        </filter>
-                    </defs>
-                </svg>
-
-                <div className="gradients-container">
-                    <div className="g1" />
-                    <div className="g2" />
-                    <div className="g3" />
-                    <div className="g4" />
-                    <div className="g5" />
-                    <div className="interactive" />
+            {showSlogan && (
+                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", textAlign: "center" }}>
+                    <Entry
+                        text="Providing Enterprise Solutions for Industry Problems"
+                        delays={[800, 1500, 1650, 1850, 1900, 2600]}
+                        duration={700}
+                        random={false}
+                    />
                 </div>
+            )}
 
-            </div>
+            {/* Name is independently absolutely-centered — never shifts when summary appears */}
+            {showName && (
+                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", whiteSpace: "nowrap" }}>
+                    <Entry
+                        text="Hi, I'm Omar"
+                        delays={[800, 1500, 1650, 1850, 1900, 2600]}
+                        duration={700}
+                        random={false}
+                        fontSize={70}
+                        fontWeight={700}
+                    />
+                </div>
+            )}
 
-
-        </>
+            {/* Summary sits below the name via calc offset — layout-independent from name */}
+            {showSummary && (
+                <div style={{ position: "absolute", top: "calc(50% + 70px)", left: "50%", transform: "translateX(-50%)", width: "660px", maxWidth: "90vw" }}>
+                    <Entry
+                        text="A dedicated Software Developer, with 2.5 years of experience developing web applications and large scale enterprise solutions. I aim to digitize the industries that our world is built upon. Explore my latest experience and projects showcasing my skills in full stack development."
+                        delays={[]}
+                        duration={700}
+                        random={true}
+                        fontSize={14}
+                        fontWeight={200}
+                        isSummary={true}
+                        revealAfter={1000}
+                    />
+                </div>
+            )}
+        </div>
     );
 }

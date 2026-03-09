@@ -1,0 +1,98 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Card } from "antd";
+import "./Entry.css";
+
+export default function Entry({
+  text,
+  delays,
+  duration,
+  random,
+  fontSize,
+  fontWeight,
+  isSummary,
+  revealAfter,
+}: {
+  text: string;
+  delays: number[];
+  duration: number;
+  random?: boolean;
+  fontSize?: number;
+  fontWeight?: number;
+  isSummary?: boolean;
+  revealAfter?: number;
+}) {
+  // Compute word data once on mount so StrictMode re-renders don't reshuffle
+  const wordData = useRef(
+    text.split(" ").map((word, i) => ({
+      word,
+      type: random ? Math.floor(Math.random() * 5) : i % 5,
+      delay: random ? Math.random() * 1500 + 400 : delays[i] ?? i * 400,
+    }))
+  );
+
+  const [showExtras, setShowExtras] = useState(false);
+
+  useEffect(() => {
+    if (!isSummary) return;
+    const t = setTimeout(() => setShowExtras(true), revealAfter ?? 900);
+    return () => clearTimeout(t);
+  }, [isSummary, revealAfter]);
+
+  return (
+    <div
+      className={`flicker-line${isSummary ? " summary" : ""}`}
+      style={{ backgroundColor: "transparent", fontSize: fontSize ?? "2rem", fontWeight: fontWeight ?? 700 }}
+    >
+      {wordData.current.map(({ word, type, delay }, i) => (
+        <span
+          key={i}
+          className={`flicker-word flicker-type-${type}`}
+          style={{
+            "--delay": `${delay}ms`,
+            "--duration": `${duration}ms`,
+            "--shadow-color": "255,255,255",
+          } as React.CSSProperties}
+        >
+          {word}
+          {i < wordData.current.length - 1 ? "\u00A0" : ""}
+        </span>
+      ))}
+
+      {isSummary && (
+        <div className={`summary-extras${showExtras ? " show" : ""}`}>
+          <div className="summary-buttons">
+            <Button type="primary" size="middle">View Projects</Button>
+            <Button
+              size="middle"
+              ghost
+              style={{ color: "rgba(255,255,255,0.8)", borderColor: "rgba(255,255,255,0.2)" }}
+            >
+              Download Resume
+            </Button>
+          </div>
+          <div className="summary-cards">
+            {(["Full Stack Dev", "Enterprise Apps", "Cloud & DevOps"] as const).map((title, i) => (
+              <Card
+                key={title}
+                size="small"
+                className={`summary-card${showExtras ? " show" : ""}`}
+                style={{
+                  transitionDelay: `${i * 110}ms`,
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  width: 175,
+                  minWidth: 140,
+                }}
+              >
+                <Card.Meta
+                  title={<span style={{ color: "rgba(255,255,255,0.9)", fontWeight: 600, fontSize: 13 }}>{title}</span>}
+                  description={<span style={{ color: "rgba(255,255,255,0.45)", fontSize: 12 }}>Placeholder skill area.</span>}
+                />
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

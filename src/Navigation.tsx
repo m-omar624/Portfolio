@@ -18,11 +18,11 @@ function scrollTo(id: string) {
 }
 
 const SECTIONS: { id: string; label: string }[] = [
-    { id: 'experience',  label: 'Experience' },
-    { id: 'projects',    label: 'Personal Projects' },
-    { id: 'resume',      label: 'Resume' },
-    { id: 'about',       label: 'About Me' },
-    { id: 'contact',     label: 'Contact' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'projects', label: 'Personal Projects' },
+    { id: 'resume', label: 'Resume' },
+    { id: 'about', label: 'About Me' },
+    { id: 'contact', label: 'Contact' },
 ];
 
 export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
@@ -61,12 +61,14 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
     return (
         <div
             style={{
-                backgroundColor: token.colorBgContainer,
-                borderRadius: "0px 0px 10px 10px",
+                background: "linear-gradient(to top, transparent, #000000 50%)",
                 padding: "0 24px",
-                position: "sticky",
+                position: "fixed",
                 top: 0,
+                left: 0,
+                width: "100%",
                 zIndex: 2000,
+                height: 120,
                 boxShadow: "0px 4px 12px rgba(0, 0, 0, 1)",
             }}
         >
@@ -96,6 +98,7 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
                         margin: 0,
                         transition: "opacity 0.3s",
                         whiteSpace: "nowrap",
+                        color: "rgba(255, 255, 255, 0.8)",
                     }}
                 >
                     {centerLabel}
@@ -103,10 +106,10 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
 
                 {/* RIGHT */}
                 <Flex gap={1}>
-                    <Button type="text" icon={<LinkedinFilled />} />
-                    <Button type="text" icon={<GithubFilled />} />
-                    <Button type="text" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}icon={<MailFilled />} />
-                    <Button type="text" icon={<SettingFilled />} />
+                    <Button type="text" icon={<LinkedinFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
+                    <Button type="text" icon={<GithubFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
+                    <Button type="text" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} icon={<MailFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
+                    <Button type="text" icon={<SettingFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
                 </Flex>
             </Flex>
         </div>

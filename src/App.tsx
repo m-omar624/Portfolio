@@ -3,6 +3,10 @@ import { theme, Flex } from "antd";
 import Navigation from "./Navigation";
 import Landing from "./Landing";
 import Experience from "./Experience";
+import About from "./About";
+import Projects from "./Projects";
+import Resume from "./Resume";
+import WireframeBackground from "./components/WireframeBackground";
 
 export default function App() {
   const { token } = theme.useToken();
@@ -21,7 +25,7 @@ export default function App() {
           color: token.colorText,
           position: "relative",
           zIndex: 1,
-          backgroundColor: token.colorBgBase,
+          backgroundColor: "black",
         }}
       >
         <Navigation onItemClick={() => setDemoOpen(false)} />
@@ -34,10 +38,16 @@ export default function App() {
             backgroundColor: token.colorBgBase,
           }}
         >
-          <Flex vertical gap={6}>
+          <Flex vertical gap={80} style={{backgroundColor:"black"}}>
 
-            <Landing />
+            <div style={{ position: "relative", background: "#050a12" }}>
+              <WireframeBackground />
+              <Landing />
+              <About />
+            </div>
             <Experience />
+            <Projects />
+            <Resume />
           </Flex>
         </div>
       </div>

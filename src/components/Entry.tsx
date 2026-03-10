@@ -11,6 +11,7 @@ export default function Entry({
   fontWeight,
   isSummary,
   revealAfter,
+  play,
 }: {
   text: string;
   delays: number[];
@@ -20,6 +21,7 @@ export default function Entry({
   fontWeight?: number;
   isSummary?: boolean;
   revealAfter?: number;
+  play?: boolean;
 }) {
   // Compute word data once on mount so StrictMode re-renders don't reshuffle
   const wordData = useRef(
@@ -31,12 +33,13 @@ export default function Entry({
   );
 
   const [showExtras, setShowExtras] = useState(false);
+  const playState = play ?? true;
 
   useEffect(() => {
-    if (!isSummary) return;
+    if (!isSummary || !playState) return;
     const t = setTimeout(() => setShowExtras(true), revealAfter ?? 900);
     return () => clearTimeout(t);
-  }, [isSummary, revealAfter]);
+  }, [isSummary, revealAfter, playState]);
 
   return (
     <div
@@ -51,6 +54,7 @@ export default function Entry({
             "--delay": `${delay}ms`,
             "--duration": `${duration}ms`,
             "--shadow-color": "255,255,255",
+            animationPlayState: playState ? "running" : "paused",
           } as React.CSSProperties}
         >
           {word}

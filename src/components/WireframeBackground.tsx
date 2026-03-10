@@ -73,10 +73,18 @@ export default function WireframeBackground() {
       return i < j ? `${i}_${j}` : `${j}_${i}`;
     }
 
+    // y-position alpha: full in top 55%, fade to 0 by 85%
+    function yAlpha(y: number): number {
+      const h = canvas!.height;
+      const fadeStart = h * 0.55;
+      const fadeEnd = h * 0.85;
+      if (y <= fadeStart) return 1;
+      if (y >= fadeEnd) return 0;
+      return 1 - (y - fadeStart) / (fadeEnd - fadeStart);
+    }
+
     const animate = () => {
-              ctx.fillStyle = `rgba(0, 0, 0, 1)`;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 
 
@@ -121,8 +129,8 @@ export default function WireframeBackground() {
           continue;
         }
 
-        // Node fades in over time
-        p.opacity = Math.min(p.opacity + 0.004, 0.75);
+        // Node fades in over time, also capped by y-position
+        p.opacity = Math.min(p.opacity + 0.004, 0.75) * yAlpha(p.y);
       }
 
       // Determine active pairs and update their fade opacity
@@ -160,7 +168,8 @@ export default function WireframeBackground() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           const distAlpha = (1 - dist / MAX_DIST) * 0.55;
-          const alpha = fadeOp * distAlpha;
+          const yFade = Math.min(yAlpha(particles[i].y), yAlpha(particles[j].y));
+          const alpha = fadeOp * distAlpha * yFade;
 
           ctx.beginPath();
           ctx.strokeStyle = `rgba(${BASE_COLOR}, ${alpha})`;
@@ -172,9 +181,11 @@ export default function WireframeBackground() {
 
       // Draw nodes
       for (const p of particles) {
+        const nodeAlpha = p.opacity * yAlpha(p.y);
+        if (nodeAlpha < 0.005) continue;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180, 230, 255, ${p.opacity})`;
+        ctx.fillStyle = `rgba(180, 230, 255, ${nodeAlpha})`;
         ctx.fill();
       }
 
@@ -198,25 +209,12 @@ export default function WireframeBackground() {
         position: "absolute",
         inset: 0,
         zIndex: 0,
-        overflow: "hidden",
         pointerEvents: "none",
       }}
     >
       <canvas
         ref={canvasRef}
         style={{ display: "block", width: "100%", height: "100%", pointerEvents: "none" }}
-      />
-      {/* Bottom fade to black */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          height: "35%",
-          background: "linear-gradient(to bottom, transparent, #000000)",
-          pointerEvents: "none",
-        }}
       />
     </div>
   );

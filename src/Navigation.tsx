@@ -69,7 +69,6 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
                 width: "100%",
                 zIndex: 2000,
                 height: 120,
-                boxShadow: "0px 4px 12px rgba(0, 0, 0, 1)",
             }}
         >
             <Flex

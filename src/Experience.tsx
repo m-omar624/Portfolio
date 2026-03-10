@@ -1,6 +1,7 @@
 import { Button, Flex, Typography } from "antd";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import SkillScroller from "./components/SkillScroller";
+import GradientBackground from "./components/GradientBackground";
 
 function useScrollVisible<T extends HTMLElement>(threshold = 0.1) {
     const ref = useRef<T>(null);
@@ -21,15 +22,19 @@ function useScrollVisible<T extends HTMLElement>(threshold = 0.1) {
 }
 
 
-function SectionHeader({ logo, logoHeight, logoWidth, text, visible, justify }: { text: string; logoHeight?:number, logoWidth?:number; visible: boolean; logo?: string; justify?: "flex-start" | "center" | "flex-end" }) {
+function SectionHeader({ logo, logoHeight, logoWidth, text, visible, justify, delay = 300 }: { text: string; logoHeight?:number, logoWidth?:number; visible: boolean; logo?: string; justify?: "flex-start" | "center" | "flex-end"; delay?: number }) {
     return (
         <Flex
             gap={10}
             align={"center"}
             justify={justify || "flex-start"}
             style={{
-                opacity: visible ? undefined : 0,
-                animation: visible ? "sectionFlicker 1.4s ease-out forwards" : "none",
+                opacity: 0,
+                animationName: visible ? "sectionFlicker" : undefined,
+                animationDuration: visible ? "1400ms" : undefined,
+                animationTimingFunction: visible ? "ease-out" : undefined,
+                animationFillMode: visible ? "forwards" : undefined,
+                animationDelay: visible ? `${delay}ms` : undefined,
             }}
         >
             {logo && <img src={logo} style={{ width: logoWidth || 30, height: logoHeight || 30 }} />}
@@ -88,9 +93,12 @@ export default function Experience() {
     )
     return (
         <div style={{
-            padding: "20px", backgroundColor: "rgba(0, 0, 0, 1)",
+            position: "relative",
+            padding: "20px",
             paddingInline: "20vw",
         }}>
+            <GradientBackground intensity={0.98} blobScale={0.65} />
+            <div style={{ position: "relative", zIndex: 1 }}>
             <style>{`
                 @keyframes indicatorPulse {
                     0% { transform: scale(0.5); opacity: 0.7; }
@@ -466,6 +474,7 @@ increase.
                 </>
             </Flex>
 
+            </div>
         </div>
     )
 }

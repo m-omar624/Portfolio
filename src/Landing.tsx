@@ -1,4 +1,3 @@
-import WireframeBackground from "./components/WireframeBackground"
 import Entry from "./components/Entry";
 import { useEffect, useState } from "react";
 
@@ -15,8 +14,7 @@ export default function Landing() {
     }, [])
 
     return (
-        <div style={{ position: "relative", height: "100vh", overflow: "hidden", background: "#050a12" }}>
-            <WireframeBackground />
+        <div style={{ position: "relative", height: "100vh" }}>
 
             {showSlogan && (
                 <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", textAlign: "center" }}>

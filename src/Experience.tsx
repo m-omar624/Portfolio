@@ -1,7 +1,6 @@
 import { Button, Flex, Typography } from "antd";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import SkillScroller from "./components/SkillScroller";
-import GradientBackground from "./components/GradientBackground";
 
 function useScrollVisible<T extends HTMLElement>(threshold = 0.1) {
     const ref = useRef<T>(null);
@@ -45,11 +44,12 @@ function SectionHeader({ logo, logoHeight, logoWidth, text, visible, justify, de
     );
 }
 
-export default function Experience() {
+export default function Experience({ onInteractive }: { onInteractive?: () => void }) {
     const magnaSection = useScrollVisible<HTMLDivElement>();
     const bondSection = useScrollVisible<HTMLDivElement>();
     const theScoreSection = useScrollVisible<HTMLDivElement>();
     const SellstaticSection = useScrollVisible<HTMLDivElement>();
+    const [magnaView, setMagnaView] = useState<'default' | 'work'>('default');
 
     const cardStyle = (visible: boolean, delay: number): CSSProperties => ({
         opacity: visible ? 1 : 0,
@@ -92,12 +92,11 @@ export default function Experience() {
         }} />
     )
     return (
-        <div style={{
+        <div id="experience" style={{
             position: "relative",
             padding: "20px",
             paddingInline: "20vw",
         }}>
-            <GradientBackground intensity={0.98} blobScale={0.65} />
             <div style={{ position: "relative", zIndex: 1 }}>
             <style>{`
                 @keyframes indicatorPulse {
@@ -126,7 +125,8 @@ export default function Experience() {
 
                     <SectionHeader logo="/Magna/Logo.png" logoWidth={30} logoHeight={30} text="Magna International" visible={magnaSection.visible} />
 
-                    <Flex gap={10} style={{ marginBottom: 20 }}>
+                    <div style={{ position: 'relative' }}>
+                    <Flex gap={10} style={{ marginBottom: 20, opacity: magnaView === 'default' ? 1 : 0, transition: 'opacity 350ms ease', pointerEvents: magnaView === 'default' ? 'auto' : 'none', visibility: magnaView === 'default' ? 'visible' : 'hidden' }}>
                         <Flex vertical gap={10} style={{ width: "60%" }}>
                             <div style={{ ...cardStyle(magnaSection.visible, 0), width: "100%" }}>
                                 <Flex vertical gap={0} style={{ padding: 20 }}>
@@ -209,12 +209,12 @@ export default function Experience() {
                                         with cloud technologies such as Azure and have been able to apply my skills in a real-world setting.
                                     </Typography.Text>
                                     <Flex align="center" justify="flex-end" gap={12} style={{ paddingTop: 20 }}>
-                                        <Button size="small" style={{
+                                        <Button size="small" onClick={() => setMagnaView('work')} style={{
                                             background: "rgba(255,255,255,0.04)",
                                             border: "1px solid rgba(255,255,255,0.08)",
                                             color: "rgba(255,255,255,0.9)"
                                         }}>My Work</Button>
-                                        <Button size="small" style={{
+                                        <Button size="small" onClick={() => onInteractive?.()} style={{
                                             background: "rgba(255,255,255,0.04)",
                                             border: "1px solid rgba(255,255,255,0.08)",
                                             color: "rgba(255,255,255,0.9)"
@@ -226,6 +226,65 @@ export default function Experience() {
                         </Flex>
 
                     </Flex>
+
+                    {/* ── Work view (fades in on top) ── */}
+                    <div style={{
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0,
+                        opacity: magnaView === 'work' ? 1 : 0,
+                        transition: 'opacity 350ms ease 200ms',
+                        pointerEvents: magnaView === 'work' ? 'auto' : 'none',
+                    }}>
+                        <Flex gap={10} style={{ marginBottom: 20 }}>
+                            <Flex vertical gap={10} style={{ flex: 1 }}>
+                                <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: 20 }}>
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' }}>Project 01</Typography.Text>
+                                    <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>3D Simulation Viewer</Typography.Title>
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 13 }}>
+                                        An interactive 3D rendering engine built in Three.js to visualize multi-body dynamics simulation
+                                        results, giving engineers direct access to MML product simulation data in-browser.
+                                    </Typography.Text>
+                                    <Flex gap={6} wrap="wrap" style={{ marginTop: 14 }}>
+                                        {['Three.js', 'React', 'TypeScript', 'Python'].map(t => (
+                                            <span key={t} style={{ fontSize: 11, padding: '2px 8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4, color: 'rgba(255,255,255,0.6)' }}>{t}</span>
+                                        ))}
+                                    </Flex>
+                                </div>
+                                <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: 20 }}>
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' }}>Project 02</Typography.Text>
+                                    <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Process Automation Platform</Typography.Title>
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 13 }}>
+                                        A suite of internal tooling to streamline vehicle part design workflows, data organization,
+                                        and cross-team collaboration across global MML divisions.
+                                    </Typography.Text>
+                                    <Flex gap={6} wrap="wrap" style={{ marginTop: 14 }}>
+                                        {['React', 'Flask', 'Python', 'SQL', 'Azure'].map(t => (
+                                            <span key={t} style={{ fontSize: 11, padding: '2px 8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4, color: 'rgba(255,255,255,0.6)' }}>{t}</span>
+                                        ))}
+                                    </Flex>
+                                </div>
+                            </Flex>
+                            <Flex vertical gap={10} style={{ flex: 1 }}>
+                                <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: 20 }}>
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 11, letterSpacing: 1, textTransform: 'uppercase' }}>Project 03</Typography.Text>
+                                    <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Enterprise Security Architecture</Typography.Title>
+                                    <Typography.Text style={{ color: "rgba(255,255,255,0.7)", fontSize: 13 }}>
+                                        Full-scale security solution encompassing token-based API auth, Microsoft EntraID SSO,
+                                        rate limiting, CSP headers, and service-layer filters across all internal apps.
+                                    </Typography.Text>
+                                    <Flex gap={6} wrap="wrap" style={{ marginTop: 14 }}>
+                                        {['Azure EntraID', 'OAuth', 'CSP', 'TypeScript'].map(t => (
+                                            <span key={t} style={{ fontSize: 11, padding: '2px 8px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 4, color: 'rgba(255,255,255,0.6)' }}>{t}</span>
+                                        ))}
+                                    </Flex>
+                                    <Flex justify="flex-end" style={{ marginTop: 20 }}>
+                                        <Button size="small" onClick={() => setMagnaView('default')} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>← Back</Button>
+                                    </Flex>
+                                </div>
+                            </Flex>
+                        </Flex>
+                    </div>
+                    </div>
                 </>
 
 

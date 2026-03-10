@@ -14,7 +14,7 @@ export default function Landing() {
     }, [])
 
     return (
-        <div style={{ position: "relative", height: "100vh" }}>
+        <div id="landing-hero" style={{ position: "relative", height: "100vh" }}>
 
             {showSlogan && (
                 <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", textAlign: "center" }}>

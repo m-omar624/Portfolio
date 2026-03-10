@@ -9,7 +9,7 @@ interface Particle {
   opacity: number;
 }
 
-const NUM_PARTICLES = 170;
+const NUM_PARTICLES = 270;
 const MAX_DIST = 160;
 const MOUSE_RADIUS = 100;
 const FADE_IN_SPEED = 0.018;

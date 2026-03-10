@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { theme, Flex } from "antd";
 import Navigation from "./Navigation";
 import Landing from "./Landing";
@@ -6,7 +6,10 @@ import Experience from "./Experience";
 import About from "./About";
 import Projects from "./Projects";
 import Resume from "./Resume";
+import Contact from "./Contact";
 import WireframeBackground from "./components/WireframeBackground";
+import GooeyBackground from "./components/GooeyBackground";
+import InteractiveDemo from "./components/InteractiveDemo";
 
 export default function App() {
   const { token } = theme.useToken();
@@ -14,9 +17,12 @@ export default function App() {
 
   return (
     <>
-      {/* Background from the example */}
-
-
+      {/* Interactive Demo — full-screen overlay */}
+      {demoOpen && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 9999 }}>
+          <InteractiveDemo onClose={() => setDemoOpen(false)} />
+        </div>
+      )}
 
       {/* Your site content */}
       <div
@@ -26,6 +32,9 @@ export default function App() {
           position: "relative",
           zIndex: 1,
           backgroundColor: "black",
+          opacity: demoOpen ? 0 : 1,
+          transition: "opacity 400ms ease",
+          pointerEvents: demoOpen ? "none" : "auto",
         }}
       >
         <Navigation onItemClick={() => setDemoOpen(false)} />
@@ -40,14 +49,18 @@ export default function App() {
         >
           <Flex vertical gap={80} style={{backgroundColor:"black"}}>
 
-            <div style={{ position: "relative", background: "#050a12" }}>
+            <div style={{ position: "relative", background: "#000000"}}>
               <WireframeBackground />
               <Landing />
               <About />
             </div>
-            <Experience />
-            <Projects />
+            <div style={{ position: "relative", background: "#000000"}}>
+              <GooeyBackground brightness={0.2} opacity={0.6} />
+              <Experience onInteractive={() => setDemoOpen(true)} />
+              <Projects />
+            </div>
             <Resume />
+            <Contact />
           </Flex>
         </div>
       </div>

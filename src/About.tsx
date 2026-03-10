@@ -51,7 +51,7 @@ export default function About() {
     });
 
     return (
-        <section style={{ position: "relative", padding: "40px 0", paddingInline: "20vw" }} ref={section.ref}>
+        <section id="about" style={{ position: "relative", padding: "40px 0", paddingInline: "20vw" }} ref={section.ref}>
             <style>{`
                 @keyframes sectionFlicker {
                     0%, 19% { opacity: 0; }

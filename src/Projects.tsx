@@ -2,7 +2,6 @@ import { Button, Flex, Typography } from "antd";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import SkillScroller from "./components/SkillScroller";
 import ProjectCard from "./components/ProjectCard";
-import GradientBackground from "./components/GradientBackground";
 
 function useScrollVisible<T extends HTMLElement>(threshold = 0.1) {
     const ref = useRef<T>(null);
@@ -109,12 +108,11 @@ export default function Projects() {
         }} />
     )
     return (
-        <div style={{
+        <div id="projects" style={{
             position: "relative",
             padding: "20px",
             paddingInline: "20vw",
         }}>
-            <GradientBackground intensity={0.4} blobScale={0.9} />
             <div style={{ position: "relative", zIndex: 1 }}>
             <style>{`
                 @keyframes indicatorPulse {

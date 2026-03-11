@@ -17,7 +17,7 @@ export default function Landing() {
         <div id="landing-hero" style={{ position: "relative", height: "100vh" }}>
 
             {showSlogan && (
-                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", textAlign: "center" }}>
+                <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", textAlign: "center" }}>
                     <Entry
                         text="Providing Enterprise Solutions for Industry Problems"
                         delays={[800, 1500, 1650, 1850, 1900, 2600]}
@@ -29,7 +29,7 @@ export default function Landing() {
 
             {/* Name is independently absolutely-centered — never shifts when summary appears */}
             {showName && (
-                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", whiteSpace: "nowrap" }}>
+                <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)", whiteSpace: "nowrap" }}>
                     <Entry
                         text="Hi, I'm Omar"
                         delays={[800, 1500, 1650, 1850, 1900, 2600]}
@@ -43,9 +43,9 @@ export default function Landing() {
 
             {/* Summary sits below the name via calc offset — layout-independent from name */}
             {showSummary && (
-                <div style={{ position: "absolute", top: "calc(50% + 70px)", left: "50%", transform: "translateX(-50%)", width: "660px", maxWidth: "90vw" }}>
+                <div style={{ position: "absolute", top: "calc(40% + 70px)", left: "50%", transform: "translateX(-50%)", width: "660px", maxWidth: "90vw" }}>
                     <Entry
-                        text="A dedicated Software Developer, with 2.5 years of experience developing web applications and large scale enterprise solutions. I aim to digitize the industries that our world is built upon. Explore my latest experience and projects showcasing my skills in full stack development."
+                        text="A dedicated Software Developer, with 2.5 years of experience developing web applications and large scale enterprise solutions. Explore my latest experience and projects showcasing my skills in full stack development."
                         delays={[]}
                         duration={700}
                         random={true}

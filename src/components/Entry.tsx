@@ -90,8 +90,8 @@ export default function Entry({
                   transitionDelay: `${i * 110}ms`,
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.08)",
-                  width: 250,
-                  minWidth: 140,
+                  width: 300,
+                  minWidth: 300,
                 }}
               >
                 <Card.Meta

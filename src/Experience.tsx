@@ -269,7 +269,7 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                             {/* ── Work view (floats in on top) ── */}
                             <div style={{
                                 position: 'absolute',
-                                top: -180, left: 0, right: 0,
+                                top: -120, left: 0, right: 0,
                                 visibility: (magnaView === 'work' || magnaView === 'exitWork') ? 'visible' : 'hidden',
                                 pointerEvents: magnaView === 'work' ? 'auto' : 'none',
                             }}>

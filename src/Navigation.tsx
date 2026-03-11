@@ -1,6 +1,5 @@
 import { Flex, Typography } from "antd";
 import {
-    LoadingOutlined,
     LinkedinFilled,
     GithubFilled,
     MailFilled,

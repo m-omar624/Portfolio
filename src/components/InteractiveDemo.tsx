@@ -24,24 +24,87 @@ function easeInOut(t: number): number {
 }
 
 const PANEL_W = 200;
-const INDICATOR_PANELS: Record<string, { title: string; description: string; offsetX: number; offsetY: number }[]> = {
+interface PanelDef {
+  title: string;
+  description: string;
+  imageTop?: string;
+  imageBottom?: string;
+  video?: string;
+  width?: number;
+  offsetX: number;
+  offsetY: number;
+}
+const INDICATOR_PANELS: Record<string, PanelDef[]> = {
   "door-handle": [
-    { title: "Simulation Playback", description: "Step through multi-body dynamics frame-by-frame directly in the browser.", offsetX: -240, offsetY: -130 },
-    { title: "Analysis Output", description: "View force, velocity, and displacement graphs tied to the simulation timeline.", offsetX: -240, offsetY: 20 },
+    {
+      title: "Multi Body Dynamics Viewer (CollabSpace)",
+      description: "A web based rendering engine built to visualize multi body dynamics simulation data. Provides visualization of animations, forces applied, and physical data such as torque, acceleration, position, etc.",
+      video: "/MagnaWorkSamples/CollabMBDAnimation2.mp4",
+      width: 600,
+      offsetX: -610, offsetY: 40,
+    },
+    {
+      title: "Automatic Conversion",
+      description: "Developed alongside the MBD Viewer, the MBD Converter is in charge of automatically converting any and all multi body simulation results into viewer ready format, without the loss of any data.",
+      video: "/MagnaWorkSamples/CollabMBDAnimation.mp4",
+      width: 600,
+      offsetX: 10, offsetY: 40,
+    },
   ],
   "rear-fender": [
-    { title: "Material Search", description: "Search thousands of approved Magna materials by name, grade, or property.", offsetX: -240, offsetY: -130 },
-    { title: "Property Explorer", description: "Inspect mechanical, thermal, and fatigue properties for any listed material.", offsetX: -240, offsetY: 20 },
+    {
+      title: "Material Database",
+      description: "A global repository for all material data and testing information.",
+      imageTop: "/MagnaWorkSamples/Materials.png",
+      width: 600,
+      offsetX: 50, offsetY: 40,
+    },
+    {
+      title: "Data Optimization",
+      imageTop: "/MagnaWorkSamples/MBDRPD2.png",
+      description: "Optimizes extremely large datasets while ensuring industry standards.",
+      width: 600,
+      offsetX: -600, offsetY: 150,
+    },
   ],
   "front-wheel": [
-    { title: "Job Tracking", description: "Track, assign, and monitor engineering test orders across EU production lines.", offsetX: -240, offsetY: -130 },
-    { title: "Order Archive", description: "Searchable history of completed ETO job orders with export and reporting tools.", offsetX: -240, offsetY: 20 },
+    {
+      title: "ETO Job Order",
+      imageTop: "/MagnaWorkSamples/ETOFlowchart.png",
+      description: "A web based tool to place, manage, and review EU testing orders.\n\nPerformed regular maintenance and implemented testing procedure flowchart editor to specify or create templates for a test process.",
+      width: 500,
+      offsetX: -700, offsetY: -400,
+    },
+    {
+      title: "AO Management",
+      imageTop: "/MagnaWorkSamples/AOManagement.png",
+      description: "A desktop application to track, organize, backup, and view all analysis data for the MML division.\n\nPerformed regular maintenance.",
+      width: 500,
+      offsetX: -700, offsetY: -20,
+    },
   ],
   "left-mirror": [
-    { title: "Review Requests", description: "Submit, track, and approve simulation analysis requests across global teams.", offsetX: -470, offsetY: -130 },
-    { title: "FEA Viewer", description: "Finite element analysis visualization integrated into the Collab review workflow.", offsetX: -470, offsetY: 20 },
-    { title: "MBD Viewer", description: "Multi-body dynamics viewer embedded directly into Collab review pages.", offsetX: -240, offsetY: -130 },
-    { title: "Comment Thread", description: "Annotate simulation results and coordinate feedback with engineers globally.", offsetX: -240, offsetY: 20 },
+    {
+      title: "CollabSpace",
+      imageTop: "/MagnaWorkSamples/Collab.png",
+      description: "A global platform hosted on the web for designers, engineers, and clients to view and approve ongoing analysis results or refer to historical analysis data.",
+      imageBottom: "/MagnaWorkSamples/CollabComments.png",
+      width: 500,
+      offsetX: 500, offsetY: -240,
+    },
+    {
+      title: "Direct Communication",
+      description: "Integrated into the design process, Collab bridges the disconnect between engineers, designers, and clients, providing understandable data for everyone.\n\nDirect communication surrounding a simulation, allowing users to discuss concerns and observations all in one place.",
+      width: 500,
+      offsetX: 500, offsetY: 350,
+    },
+    {
+      title: "Finite Element Analysis",
+      description: "A web based rendering engine built to visualize finite element simulation results.",
+      video: "/MagnaWorkSamples/CollabFEAAnimation.mp4",
+      width: 600,
+      offsetX: -140, offsetY:150,
+    },
   ],
 };
 
@@ -346,7 +409,7 @@ export default function InteractiveDemo({ onClose }: Props) {
           new THREE.Vector3(rightX, groundY + carHeight * 0.45, 0),
           new THREE.Vector3(rightX, groundY + carHeight * 0.38, frontZ + 0.45),
           new THREE.Vector3(rightX, groundY + carHeight * 0.18, rearZ - 0.6),
-          new THREE.Vector3(rightX - 0.05, groundY + carHeight * 0.7, frontZ + 0.3),
+          new THREE.Vector3(rightX - 0.05, groundY + carHeight * 0.7, frontZ + 2.5),
         ];
         const defs = [
           { id: "door-handle",  label: "Multi Body Dynamics Viewer" },
@@ -637,8 +700,8 @@ export default function InteractiveDemo({ onClose }: Props) {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: 20,
-              height: 20,
+              width: 10,
+              height: 10,
               borderRadius: "50%",
               background: openPanel === def.id ? "#ffffff" : "rgba(255,255,255,0.9)",
               boxShadow: "0 0 6px rgba(255,255,255,0.5)",
@@ -696,7 +759,7 @@ export default function InteractiveDemo({ onClose }: Props) {
             position: "absolute",
             left: openPanelAnchor.x + panel.offsetX,
             top: openPanelAnchor.y + panel.offsetY,
-            width: PANEL_W,
+            width: panel.width ?? PANEL_W,
             background: "rgba(0,0,0,0.88)",
             border: "1px solid rgba(255,255,255,0.12)",
             padding: "16px 18px",
@@ -723,15 +786,36 @@ export default function InteractiveDemo({ onClose }: Props) {
               onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.4)"; }}
             >×</button>
           )}
-          <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 8 }}>
-            {indicatorDefs.find((d) => d.id === openPanel)?.label}
-          </div>
-          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, letterSpacing: "0.3px" }}>
+          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.3px" }}>
             {panel.title}
           </div>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>
+          {panel.imageTop && (
+            <img
+              src={panel.imageTop}
+              alt=""
+              style={{ width: "100%", borderRadius: 4, marginBottom: 10, display: "block", objectFit: "cover" }}
+            />
+          )}
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, whiteSpace: "pre-line" }}>
             {panel.description}
           </div>
+          {panel.imageBottom && (
+            <img
+              src={panel.imageBottom}
+              alt=""
+              style={{ width: "100%", borderRadius: 4, marginTop: 10, display: "block", objectFit: "cover" }}
+            />
+          )}
+          {panel.video && (
+            <video
+              src={panel.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{ width: "100%", borderRadius: 4, marginTop: 10, display: "block" }}
+            />
+          )}
         </div>
       ))}
 

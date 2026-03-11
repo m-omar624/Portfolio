@@ -1,4 +1,4 @@
-import { Button, Flex, Typography, Image,  } from "antd";
+import { Button, Flex, Typography, Image, } from "antd";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import SkillScroller from "./components/SkillScroller";
 
@@ -173,9 +173,27 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                 <Flex vertical gap={10} style={{ width: "60%" }}>
                                     <div style={{ ...cardStyle(magnaSection.visible, 0), ...getDefaultCardStyle(magnaSection.visible, 0, 0), width: "100%" }}>
                                         <Flex vertical gap={0} style={{ padding: 20 }}>
+                                            <Flex justify="space-between" >
+                                                <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginBottom: 0 }}>{`Software Engineer \u2013 Coop`}</Typography.Title>
+                                                <Flex align="top" justify="flex-end" gap={12}>
+                                                    <Button size="small" onClick={goToWork} style={{
+                                                        background: "rgba(120, 47, 255, 0.75)",
+                                                        border: "1px solid rgba(255,255,255,0.08)",
+                                                        color: "rgba(255,255,255,0.9)",
+                                                        padding: 13,
+                                                        fontSize: 15
+                                                    }}>My Work</Button>
+                                                    <Button size="small" onClick={() => onInteractive?.()} style={{
+                                                        background: "rgba(255,255,255,0.04)",
+                                                        border: "1px solid rgba(255,255,255,0.08)",
+                                                        color: "rgba(255,255,255,0.9)",
+                                                        padding: 13,
+                                                        fontSize: 15
+                                                    }}>Interactive</Button>
 
-                                            <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginBottom: 0 }}>{`Software Engineer \u2013 Coop`}</Typography.Title>
-                                            <Flex align="center" gap={8} style={{ marginBottom: 10 }}>
+                                                </Flex>
+                                            </Flex>
+                                            <Flex align="center" gap={8} style={{ marginBottom: 30 }}>
                                                 <Typography.Text style={{ color: "rgba(255,255,255,0.45)", fontSize: 12 }}>May 2025 - May 2026</Typography.Text>
                                             </Flex>
                                             <Typography.Text style={{ color: "rgba(255,255,255,0.9)", fontSize: 14, marginBottom: 0 }}>
@@ -252,19 +270,7 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                                 supplier relationships and creating an internal tool for visualizing real simulation data. I have also gained experience
                                                 with cloud technologies such as Azure and have been able to apply my skills in a real-world setting.
                                             </Typography.Text>
-                                            <Flex align="center" justify="flex-end" gap={12} style={{ paddingTop: 20 }}>
-                                                <Button size="small" onClick={goToWork} style={{
-                                                    background: "rgba(255,255,255,0.04)",
-                                                    border: "1px solid rgba(255,255,255,0.08)",
-                                                    color: "rgba(255,255,255,0.9)"
-                                                }}>My Work</Button>
-                                                <Button size="small" onClick={() => onInteractive?.()} style={{
-                                                    background: "rgba(255,255,255,0.04)",
-                                                    border: "1px solid rgba(255,255,255,0.08)",
-                                                    color: "rgba(255,255,255,0.9)"
-                                                }}>Interactive</Button>
 
-                                            </Flex>
                                         </Flex>
                                     </div>
                                 </Flex>
@@ -278,82 +284,79 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                 visibility: (magnaView === 'work' || magnaView === 'exitWork') ? 'visible' : 'hidden',
                                 pointerEvents: magnaView === 'work' ? 'auto' : 'none',
                             }}>
-                                <Flex gap={6} style={{ marginBottom: 20 }}>
-                                    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width: "30vw", height: "100%", ...getWorkCardStyle(0) }}>
-                                        <div style={{ padding: 15 }}>
-                                            <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Collab Space</Typography.Title>
-                                            <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>A Global Platform for Engineers, clients, and designers to verify and approve analysis requests.
-                                                Integrated into the design process, Collab bridges the disconnect between teams and clients, providing understandable simulation data for everyone
-                                            </Typography.Text>
-                                        </div>
-                                        <Flex vertical gap={30} style={{ height: "100%", padding: 6 }}>
-                                            <Image src="/MagnaWorkSamples/Collab.png" style={{ width: "100%" }}></Image>
-                                            <Image src="/MagnaWorkSamples/CollabComments.png" style={{ width: "100%" }}></Image>
+                                <Flex vertical gap={20} style={{ marginBottom: 20, paddingInline: "15vw" }}>
+                                    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width: "100%", height: "100%", ...getWorkCardStyle(0) }}>
 
-                                        </Flex>
-                                    </div>
-                                    <Flex vertical gap={10} style={{ flex: 1 }}>
                                         <Flex gap={10} style={{ flex: 1 }}>
-                                    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width:"100%", height:"100%", ...getWorkCardStyle(4) }}>
-                                        <div style={{padding:15}}>
-                                        <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Finite Element Analysis Viewer (Collab)</Typography.Title>
-                                        </div>
-                                        <Flex vertical gap={10}>
-                                        <video src="/MagnaWorkSamples/CollabFEAAnimation.mp4" style={{width:"100%"}} autoPlay loop muted></video>
-                                        </Flex>
-                                    </div>
-                                    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width:"100%", height:"100%", ...getWorkCardStyle(6) }}>
-                                        <div style={{padding:15}}>
-                                        <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Multi Body Dynamics Viewer (Collab)</Typography.Title>
-                                        </div>
-                                        <Flex vertical gap={10}>
-                                        <video src="/MagnaWorkSamples/CollabMBDAnimation2.mp4" style={{width:"100%"}} autoPlay loop muted ></video>
-                                        </Flex>
-                                    </div>
-                                        </Flex>
-                                        <Flex gap={10} style={{ flex: 1 }}>
+                                            <div style={{ padding: 15, width: "20vw" }}>
+                                                <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Collab Space</Typography.Title>
+                                                <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>A Global Platform for Engineers, clients, and designers to verify and approve analysis requests.
+                                                    Integrated into the design process, Collab bridges the disconnect between teams and clients, providing understandable simulation data for everyone
+                                                </Typography.Text>
+                                            </div>
+                                            <div>
 
-                                    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width:"100%", height:"100%", ...getWorkCardStyle(2) }}>
-                                        <div style={{padding:15}}>
-                                        <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Magna Material Database</Typography.Title>
-                                        <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>A Global Database hosted on the web for easy access of Material Data.
-                                        </Typography.Text>
-                                        </div>
-                                        <Flex vertical gap={10} style={{height:"100%", padding:6}}>
-                                        <Image src="/MagnaWorkSamples/Materials.png" style={{width:"100%"}}></Image>
+                                                <Flex vertical gap={0} style={{ paddingBlock: 10 }}>
+                                                    <video src="/MagnaWorkSamples/CollabFEAAnimation.mp4" style={{ width: "25vw" }} autoPlay loop muted></video>
+                                                </Flex>
+                                                <div style={{ padding: 0 }}>
+                                                    <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Finite Element Analysis Viewer (Collab)</Typography.Title>
+                                                </div>
+                                            </div>
+                                            <div>
+
+                                                <Flex vertical gap={0} style={{ paddingBlock: 10 }}>
+                                                    <video src="/MagnaWorkSamples/CollabMBDAnimation2.mp4" style={{ width: "25vw" }} autoPlay loop muted ></video>
+                                                </Flex>
+                                                <div style={{ padding: 0 }}>
+                                                    <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Multi Body Dynamics Viewer (Collab)</Typography.Title>
+                                                </div>
+                                            </div>
                                         </Flex>
                                     </div>
-                                    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width:"100%", height:"100%", ...getWorkCardStyle(5) }}>
-                                        <div style={{padding:15}}>
-                                        <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>AO Management</Typography.Title>
-                                        <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Performed regular maintenance on a n application to track, manage, and backup historical analysis data and files.
-                                        </Typography.Text>
+                                    <Flex gap={20} style={{ flex: 1 }}>
+
+                                        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width: "100%", height: "100%", ...getWorkCardStyle(2) }}>
+                                            <div style={{ padding: 15 }}>
+                                                <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>Magna Material Database</Typography.Title>
+                                                <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>A Global Database hosted on the web for easy access and storage of Material Data.
+                                                </Typography.Text>
+                                            </div>
+                                            <Flex vertical gap={10} style={{ height: "100%", padding: 6 }}>
+                                                <Image src="/MagnaWorkSamples/Materials.png" style={{ width: "100%" }}></Image>
+                                            </Flex>
                                         </div>
-                                        <Flex vertical gap={10} style={{height:"100%", padding:6}}>
-                                        <Image src="/MagnaWorkSamples/AOManagement.png" style={{width:"100%"}}></Image>
-                                        </Flex>
-                                    </div>                                       
-                                    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width:"100%", height:"100%", ...getWorkCardStyle(3) }}>
-                                        <div style={{padding:15}}>
-                                        <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>ETO Job Order</Typography.Title>
-                                        <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Performed regular maintenance on the EU testing order management platform
-                                        </Typography.Text>
+                                        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width: "100%", height: "100%", ...getWorkCardStyle(5) }}>
+                                            <div style={{ padding: 15 }}>
+                                                <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>AO Management</Typography.Title>
+                                                <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Performed regular maintenance on an application to track, manage, and backup historical analysis data.
+                                                </Typography.Text>
+                                            </div>
+                                            <Flex vertical gap={10} style={{ height: "100%", padding: 6 }}>
+                                                <Image src="/MagnaWorkSamples/AOManagement.png" style={{ width: "100%" }}></Image>
+                                            </Flex>
                                         </div>
-                                        <Flex vertical gap={10} style={{height:"100%", padding:6}}>
-                                        <Image src="/MagnaWorkSamples/ETO.png" style={{width:"100%"}}></Image>
-                                        </Flex>
-                                    </div>
-                                        </Flex>
+                                        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width: "100%", height: "100%", ...getWorkCardStyle(3) }}>
+                                            <div style={{ padding: 15 }}>
+                                                <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginTop: 8, marginBottom: 6 }}>ETO Job Order</Typography.Title>
+                                                <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Performed regular maintenance on the EU testing order management platform
+                                                </Typography.Text>
+                                            </div>
+                                            <Flex vertical gap={10} style={{ height: "100%", padding: 6 }}>
+                                                <Image src="/MagnaWorkSamples/ETOFlowchart.png" style={{ width: "100%" }}></Image>
+                                            </Flex>
+                                        </div>
                                     </Flex>
+                                    <div style={{ ...getWorkCardStyle(6), display: 'flex', justifyContent: 'flex-start', marginTop: 0 }}>
+                                        <Button size="middle" onClick={goBack} style={{
+                                            background: 'rgba(255,255,255,0.04)',
+                                            border: '1px solid rgba(255,255,255,0.08)',
+                                            color: 'rgba(255,255,255,0.6)',
+                                            fontSize: 16,
+                                        }}>← Back</Button>
+                                    </div>
                                 </Flex>
-                                <div style={{ ...getWorkCardStyle(6), display: 'flex', justifyContent: 'flex-start', marginTop: 10 }}>
-                                    <Button size="small" onClick={goBack} style={{
-                                        background: 'rgba(255,255,255,0.04)',
-                                        border: '1px solid rgba(255,255,255,0.08)',
-                                        color: 'rgba(255,255,255,0.6)',
-                                        fontSize: 11,
-                                    }}>← Back</Button>
-                                </div>
+
                             </div>
                         </div>
                     </>

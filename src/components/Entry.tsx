@@ -35,6 +35,12 @@ export default function Entry({
   const [showExtras, setShowExtras] = useState(false);
   const playState = play ?? true;
 
+  const cards = [
+    { title: "2+ Years in Full Stack Development", description: "Developing web applications and enterprise solutions at Magna International, Bond, and SellStatic" },
+    { title: "Enterprise Apps", description: " I aim to digitize the industries that our world is built upon." },
+    { title: "Cloud & DevOps", description: "Experience with cloud platforms and DevOps practices to ensure scalable and reliable deployments." },
+  ]
+
   useEffect(() => {
     if (!isSummary || !playState) return;
     const t = setTimeout(() => setShowExtras(true), revealAfter ?? 900);
@@ -74,23 +80,23 @@ export default function Entry({
               Download Resume
             </Button>
           </div>
-          <div className="summary-cards">
-            {(["Full Stack Dev", "Enterprise Apps", "Cloud & DevOps"] as const).map((title, i) => (
+          <div className="summary-cards" style={{ marginTop: "3vh" }}>
+            {cards.map((card, i) => (
               <Card
-                key={title}
+                key={card.title}
                 size="small"
                 className={`summary-card${showExtras ? " show" : ""}`}
                 style={{
                   transitionDelay: `${i * 110}ms`,
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.08)",
-                  width: 175,
+                  width: 250,
                   minWidth: 140,
                 }}
               >
                 <Card.Meta
-                  title={<span style={{ color: "rgba(255,255,255,0.9)", fontWeight: 600, fontSize: 13 }}>{title}</span>}
-                  description={<span style={{ color: "rgba(255,255,255,0.45)", fontSize: 12 }}>Placeholder skill area.</span>}
+                  title={<span style={{ color: "rgba(255,255,255,0.9)", fontWeight: 600, fontSize: 14 }}>{card.title}</span>}
+                  description={<span style={{ color: "rgba(255,255,255,0.45)", fontSize: 12 }}>{card.description}</span>}
                 />
               </Card>
             ))}

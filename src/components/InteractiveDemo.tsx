@@ -23,6 +23,28 @@ function easeInOut(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+const PANEL_W = 200;
+const INDICATOR_PANELS: Record<string, { title: string; description: string; offsetX: number; offsetY: number }[]> = {
+  "door-handle": [
+    { title: "Simulation Playback", description: "Step through multi-body dynamics frame-by-frame directly in the browser.", offsetX: -240, offsetY: -130 },
+    { title: "Analysis Output", description: "View force, velocity, and displacement graphs tied to the simulation timeline.", offsetX: -240, offsetY: 20 },
+  ],
+  "rear-fender": [
+    { title: "Material Search", description: "Search thousands of approved Magna materials by name, grade, or property.", offsetX: -240, offsetY: -130 },
+    { title: "Property Explorer", description: "Inspect mechanical, thermal, and fatigue properties for any listed material.", offsetX: -240, offsetY: 20 },
+  ],
+  "front-wheel": [
+    { title: "Job Tracking", description: "Track, assign, and monitor engineering test orders across EU production lines.", offsetX: -240, offsetY: -130 },
+    { title: "Order Archive", description: "Searchable history of completed ETO job orders with export and reporting tools.", offsetX: -240, offsetY: 20 },
+  ],
+  "left-mirror": [
+    { title: "Review Requests", description: "Submit, track, and approve simulation analysis requests across global teams.", offsetX: -470, offsetY: -130 },
+    { title: "FEA Viewer", description: "Finite element analysis visualization integrated into the Collab review workflow.", offsetX: -470, offsetY: 20 },
+    { title: "MBD Viewer", description: "Multi-body dynamics viewer embedded directly into Collab review pages.", offsetX: -240, offsetY: -130 },
+    { title: "Comment Thread", description: "Annotate simulation results and coordinate feedback with engineers globally.", offsetX: -240, offsetY: 20 },
+  ],
+};
+
 export default function InteractiveDemo({ onClose }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -34,7 +56,7 @@ export default function InteractiveDemo({ onClose }: Props) {
   const [pickerInfo, setPickerInfo] = useState<string | null>(null);
   const [indicatorDefs, setIndicatorDefs] = useState<{ id: string; label: string }[]>([]);
   const [openPanel, setOpenPanel] = useState<string | null>(null);
-  const [panelScreenPos, setPanelScreenPos] = useState<{ x: number; y: number } | null>(null);
+  const [openPanelAnchor, setOpenPanelAnchor] = useState<{ x: number; y: number } | null>(null);
 
   // ── Refs shared with the render loop ────────────────────────────────────
   const lightPhaseRef = useRef<"dark" | "scene">("dark");
@@ -44,6 +66,9 @@ export default function InteractiveDemo({ onClose }: Props) {
   const pickerModeRef = useRef(false);
   const indicatorsRef = useRef<THREE.Vector3[]>([]);
   const indicatorDomRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const indicatorDefsRef = useRef<{ id: string; label: string }[]>([]);
+  const openPanelRef = useRef<string | null>(null);
+  const svgLineStartRefs = useRef<(SVGLineElement | null)[]>([]);
 
   // Intro orbit parameters, written once when the model loads
   const introCamRef = useRef<{
@@ -74,6 +99,7 @@ export default function InteractiveDemo({ onClose }: Props) {
   useEffect(() => {
     pickerModeRef.current = pickerMode;
   }, [pickerMode]);
+  useEffect(() => { openPanelRef.current = openPanel; }, [openPanel]);
 
   // ── 1. Fade-in on mount ──────────────────────────────────────────────────
   useEffect(() => {
@@ -320,14 +346,16 @@ export default function InteractiveDemo({ onClose }: Props) {
           new THREE.Vector3(rightX, groundY + carHeight * 0.45, 0),
           new THREE.Vector3(rightX, groundY + carHeight * 0.38, frontZ + 0.45),
           new THREE.Vector3(rightX, groundY + carHeight * 0.18, rearZ - 0.6),
-          new THREE.Vector3(rightX - 0.2, groundY + carHeight * 0.5, frontZ + 0.05),
+          new THREE.Vector3(rightX - 0.05, groundY + carHeight * 0.7, frontZ + 0.3),
         ];
-        setIndicatorDefs([
-          { id: "door-handle",    label: "Door Handle" },
-          { id: "rear-fender",    label: "Rear Fender" },
-          { id: "front-wheel",    label: "Front Wheel" },
-          { id: "rear-taillight", label: "Rear Taillight" },
-        ]);
+        const defs = [
+          { id: "door-handle",  label: "Multi Body Dynamics Viewer" },
+          { id: "rear-fender",  label: "Material Database" },
+          { id: "front-wheel",  label: "ETO Job Order" },
+          { id: "left-mirror",  label: "Collab Space" },
+        ];
+        indicatorDefsRef.current = defs;
+        setIndicatorDefs(defs);
 
         setModelLoaded(true);
 
@@ -470,8 +498,18 @@ export default function InteractiveDemo({ onClose }: Props) {
         }
         el.style.opacity = "1";
         el.style.pointerEvents = "auto";
-        el.style.left = `${(proj.x * 0.5 + 0.5) * window.innerWidth}px`;
-        el.style.top = `${(-proj.y * 0.5 + 0.5) * window.innerHeight}px`;
+        const sx = (proj.x * 0.5 + 0.5) * window.innerWidth;
+        const sy = (-proj.y * 0.5 + 0.5) * window.innerHeight;
+        el.style.left = `${sx}px`;
+        el.style.top = `${sy}px`;
+        if (indicatorDefsRef.current[i]?.id === openPanelRef.current) {
+          svgLineStartRefs.current.forEach(line => {
+            if (line) {
+              line.setAttribute("x1", String(sx));
+              line.setAttribute("y1", String(sy));
+            }
+          });
+        }
       });
 
       renderer.render(scene, camera);
@@ -513,6 +551,14 @@ export default function InteractiveDemo({ onClose }: Props) {
           0%, 100% { transform: scale(1); opacity: 0.55; }
           50% { transform: scale(1.6); opacity: 0.1; }
         }
+        @keyframes drawLine {
+          from { stroke-dashoffset: 600; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes panelIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
       `}</style>
       {sceneActive && (
         <canvas
@@ -550,13 +596,17 @@ export default function InteractiveDemo({ onClose }: Props) {
           onClick={() => {
             if (openPanel === def.id) {
               setOpenPanel(null);
-              setPanelScreenPos(null);
+              openPanelRef.current = null;
+              setOpenPanelAnchor(null);
+              svgLineStartRefs.current = [];
             } else {
+              svgLineStartRefs.current = [];
               setOpenPanel(def.id);
+              openPanelRef.current = def.id;
               const dotEl = indicatorDomRefs.current[i];
               const x = dotEl ? (parseFloat(dotEl.style.left) || 0) : 0;
               const y = dotEl ? (parseFloat(dotEl.style.top) || 0) : 0;
-              setPanelScreenPos({ x, y });
+              setOpenPanelAnchor({ x, y });
             }
           }}
           style={{
@@ -613,72 +663,77 @@ export default function InteractiveDemo({ onClose }: Props) {
         </div>
       ))}
 
-      {/* Feature panel */}
-      {openPanel !== null && panelScreenPos && indicatorDefs.some((d) => d.id === openPanel) && (
-        <div
+      {/* SVG line overlay */}
+      {openPanel !== null && openPanelAnchor && (
+        <svg
           style={{
-            position: "absolute",
-            left: Math.max(8, panelScreenPos.x - 256),
-            top: panelScreenPos.y + 24,
-            background: "rgba(0,0,0,0.88)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            padding: "28px 32px",
-            width: 220,
-            color: "rgba(255,255,255,0.85)",
-            zIndex: 10,
+            position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
+            pointerEvents: "none", zIndex: 8, overflow: "visible",
           }}
         >
-          <div
-            style={{
-              fontSize: 9,
-              letterSpacing: "3px",
-              textTransform: "uppercase",
-              color: "rgba(255,255,255,0.35)",
-              marginBottom: 10,
-            }}
-          >
-            Feature
-          </div>
-          <div
-            style={{
-              fontSize: 17,
-              fontWeight: 600,
-              marginBottom: 18,
-              letterSpacing: "0.5px",
-            }}
-          >
+          {(INDICATOR_PANELS[openPanel] ?? []).map((panel, pi) => (
+            <line
+              key={`${openPanel}-${pi}`}
+              ref={(el: SVGLineElement | null) => { svgLineStartRefs.current[pi] = el; }}
+              x1={openPanelAnchor.x}
+              y1={openPanelAnchor.y}
+              x2={openPanelAnchor.x + panel.offsetX + PANEL_W / 2}
+              y2={openPanelAnchor.y + panel.offsetY + 55}
+              stroke="rgba(255,255,255,0.2)"
+              strokeWidth={1}
+              strokeDasharray={600}
+              style={{ animation: `drawLine 500ms ease ${pi * 90}ms both` }}
+            />
+          ))}
+        </svg>
+      )}
+
+      {/* Feature panels */}
+      {openPanel !== null && openPanelAnchor && (INDICATOR_PANELS[openPanel] ?? []).map((panel, pi) => (
+        <div
+          key={`${openPanel}-${pi}`}
+          style={{
+            position: "absolute",
+            left: openPanelAnchor.x + panel.offsetX,
+            top: openPanelAnchor.y + panel.offsetY,
+            width: PANEL_W,
+            background: "rgba(0,0,0,0.88)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            padding: "16px 18px",
+            color: "rgba(255,255,255,0.85)",
+            zIndex: 10,
+            animation: `panelIn 400ms cubic-bezier(0.2,0.9,0.18,1) ${pi * 90}ms both`,
+          }}
+        >
+          {pi === 0 && (
+            <button
+              onClick={() => {
+                setOpenPanel(null);
+                openPanelRef.current = null;
+                setOpenPanelAnchor(null);
+                svgLineStartRefs.current = [];
+              }}
+              style={{
+                position: "absolute", top: 10, right: 10,
+                background: "transparent", border: "none",
+                color: "rgba(255,255,255,0.4)", cursor: "pointer",
+                fontSize: 16, padding: "2px 6px", lineHeight: 1,
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.4)"; }}
+            >×</button>
+          )}
+          <div style={{ fontSize: 9, letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginBottom: 8 }}>
             {indicatorDefs.find((d) => d.id === openPanel)?.label}
           </div>
-          <div
-            style={{
-              fontSize: 12,
-              color: "rgba(255,255,255,0.45)",
-              lineHeight: 1.8,
-            }}
-          >
-            Content goes here.
+          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, letterSpacing: "0.3px" }}>
+            {panel.title}
           </div>
-          <button
-            onClick={() => { setOpenPanel(null); setPanelScreenPos(null); }}
-            style={{
-              position: "absolute",
-              top: 14,
-              right: 14,
-              background: "transparent",
-              border: "none",
-              color: "rgba(255,255,255,0.4)",
-              cursor: "pointer",
-              fontSize: 18,
-              padding: "4px 8px",
-              lineHeight: 1,
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = "#fff"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.4)"; }}
-          >
-            ×
-          </button>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>
+            {panel.description}
+          </div>
         </div>
-      )}
+      ))}
 
       {/* Picker toggle */}
       {modelLoaded && (

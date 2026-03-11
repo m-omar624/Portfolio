@@ -1,15 +1,21 @@
 .nav-button {
-  background: transparent !important;
-  box-shadow: none !important;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  padding: 4px 10px;
   position: relative;
-  font-weight: 350; /* keep constant */
+  font-weight: 350;
   transition: color 0.5s ease;
 }
 
-/* remove AntD hover background */
 .nav-button:hover,
 .nav-button:focus {
-  background: transparent !important;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* Slightly stronger appearance without resizing text */

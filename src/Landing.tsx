@@ -1,61 +1,145 @@
 import Entry from "./components/Entry";
+import IconBtn from "./components/IconBtn";
+import { LinkedinFilled, GithubFilled, MailFilled } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 
 export default function Landing() {
-    const [showSlogan, setShowSlogan] = useState(true)
-    const [showName, setShowName] = useState(false)
-    const [showSummary, setShowSummary] = useState(false)
+  const [showSlogan, setShowSlogan] = useState(true);
+  const [showName, setShowName] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
-    useEffect(() => {
-        const t1 = setTimeout(() => setShowSlogan(false), 4500)
-        const t2 = setTimeout(() => setShowName(true), 5000)
-        const t3 = setTimeout(() => setShowSummary(true), 7000)
-        return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
-    }, [])
+  useEffect(() => {
+    const t1 = setTimeout(() => setShowSlogan(false), 4500);
+    const t2 = setTimeout(() => setShowName(true), 5000);
+    const t3 = setTimeout(() => setShowSummary(true), 7000);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, []);
 
-    return (
-        <div id="landing-hero" style={{ position: "relative", height: "100vh" }}>
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-            {showSlogan && (
-                <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", textAlign: "center" }}>
-                    <Entry
-                        text="Providing Enterprise Solutions for Industry Problems"
-                        delays={[800, 1500, 1650, 1850, 1900, 2600]}
-                        duration={700}
-                        random={false}
-                    />
-                </div>
-            )}
+  const threshold = window.innerHeight * 0.3;
+  const landingIconOpacity = Math.max(0, 1 - scrollY / threshold);
 
-            {/* Name is independently absolutely-centered — never shifts when summary appears */}
-            {showName && (
-                <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%, -50%)", whiteSpace: "nowrap" }}>
-                    <Entry
-                        text="Hi, I'm Omar"
-                        delays={[800, 1500, 1650, 1850, 1900, 2600]}
-                        duration={700}
-                        random={false}
-                        fontSize={70}
-                        fontWeight={700}
-                    />
-                </div>
-            )}
-
-            {/* Summary sits below the name via calc offset — layout-independent from name */}
-            {showSummary && (
-                <div style={{ position: "absolute", top: "calc(40% + 70px)", left: "50%", transform: "translateX(-50%)", width: "660px", maxWidth: "90vw" }}>
-                    <Entry
-                        text="A dedicated Software Developer, with 2.5 years of experience developing web applications and large scale enterprise solutions. Explore my latest experience and projects showcasing my skills in full stack development."
-                        delays={[]}
-                        duration={700}
-                        random={true}
-                        fontSize={14}
-                        fontWeight={200}
-                        isSummary={true}
-                        revealAfter={1000}
-                    />
-                </div>
-            )}
+  return (
+    <div id="landing-hero" style={{ position: "relative", height: "100vh" }}>
+      {showSlogan && (
+        <div
+          style={{
+            position: "absolute",
+            top: "40%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "100%",
+            textAlign: "center",
+          }}
+        >
+          <Entry
+            text="Providing Enterprise Solutions for Industry Problems"
+            delays={[800, 1500, 1650, 1850, 1900, 2600]}
+            duration={700}
+            random={false}
+          />
         </div>
-    );
+      )}
+
+      {/* Name is independently absolutely-centered — never shifts when summary appears */}
+      {showName && (
+        <div
+          style={{
+            position: "absolute",
+            top: "40%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <Entry
+            text="Hi, I'm Omar"
+            delays={[800, 1500, 1650, 1850, 1900, 2600]}
+            duration={700}
+            random={false}
+            fontSize={70}
+            fontWeight={700}
+          />
+        </div>
+      )}
+
+      {/* Summary sits below the name via calc offset — layout-independent from name */}
+      {showSummary && (
+        <div
+          style={{
+            position: "absolute",
+            top: "calc(40% + 70px)",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "660px",
+            maxWidth: "90vw",
+          }}
+        >
+          <Entry
+            text="A dedicated Software Developer, with 2.5 years of experience developing web applications and large scale enterprise solutions. Explore my latest experience and projects showcasing my skills in full stack development."
+            delays={[]}
+            duration={700}
+            random={true}
+            fontSize={14}
+            fontWeight={200}
+            isSummary={true}
+            revealAfter={1000}
+          />
+        </div>
+      )}
+      {showSummary && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 32,
+            right: 32,
+            opacity: landingIconOpacity,
+            transition: "opacity 150ms ease",
+            pointerEvents: landingIconOpacity < 0.05 ? "none" : "auto",
+            display: "flex",
+            gap: 20,
+          }}
+        >
+          <a
+            href="https://www.linkedin.com/in/m-o-927824397/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <IconBtn>
+              <LinkedinFilled />
+            </IconBtn>
+          </a>
+          <a
+            href="https://github.com/m-omar624"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <IconBtn>
+              <GithubFilled />
+            </IconBtn>
+          </a>
+
+          <IconBtn
+            onClick={() =>
+              document
+                .getElementById("contact")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
+            <MailFilled />
+          </IconBtn>
+        </div>
+      )}
+    </div>
+  );
 }

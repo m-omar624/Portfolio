@@ -1,5 +1,7 @@
-import { Button, Flex, Input, Typography } from "antd";
+import { Flex, Input, Typography } from "antd";
 import { GithubFilled, LinkedinFilled, MailFilled } from "@ant-design/icons";
+import AppButton from "./components/AppButton";
+import emailjs from "@emailjs/browser";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 function useScrollVisible<T extends HTMLElement>(threshold = 0.1) {
@@ -40,9 +42,41 @@ export default function Contact() {
         borderRadius: 6,
     };
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (!name || !email || !message) return;
-        window.location.href = `mailto:?subject=Portfolio%20Contact%20from%20${encodeURIComponent(name)}&body=${encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`)}`;
+
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+        const templateParams = {
+            from_name: name,
+            from_email: email,
+            message: message,
+            to_email: "muhammad.omar1141@gmail.com",
+        };
+
+        if (serviceId && templateId && publicKey) {
+            try {
+                await emailjs.send(serviceId as string, templateId as string, templateParams, publicKey as string);
+                alert("Message sent — thank you!");
+                setName(""); setEmail(""); setMessage("");
+            } catch (err) {
+                console.error(err);
+                alert("Send failed — opening your mail client instead.");
+                const to = "muhammad.omar1141@gmail.com";
+                const subject = `Portfolio Contact from ${name}`;
+                const body = `From: ${name}\nEmail: ${email}\n\n${message}`;
+                window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                setTimeout(() => { setName(""); setEmail(""); setMessage(""); }, 500);
+            }
+        } else {
+            const to = "muhammad.omar1141@gmail.com";
+            const subject = `Portfolio Contact from ${name}`;
+            const body = `From: ${name}\nEmail: ${email}\n\n${message}`;
+            window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            setTimeout(() => { setName(""); setEmail(""); setMessage(""); }, 500);
+        }
     };
 
     return (
@@ -58,6 +92,13 @@ export default function Contact() {
                     80% { opacity: 1; }
                     85% { opacity: 0.85; }
                     90%, 100% { opacity: 1; }
+                }
+                #contact input::placeholder,
+                #contact input::-webkit-input-placeholder,
+                #contact textarea::placeholder,
+                #contact textarea::-webkit-input-placeholder {
+                    color: rgba(255, 255, 255, 0.55) !important;
+                    opacity: 1 !important;
                 }
             `}</style>
             <div ref={section.ref} style={{ height: 0 }} />
@@ -87,12 +128,14 @@ export default function Contact() {
                             <Flex vertical gap={12} style={{ marginTop: 16 }}>
                                 <Flex gap={12}>
                                     <Input
+                                        className="app-input"
                                         placeholder="Your name"
                                         value={name}
                                         onChange={e => setName(e.target.value)}
                                         style={inputStyle}
                                     />
                                     <Input
+                                        className="app-input"
                                         placeholder="Your email"
                                         value={email}
                                         onChange={e => setEmail(e.target.value)}
@@ -100,6 +143,7 @@ export default function Contact() {
                                     />
                                 </Flex>
                                 <Input.TextArea
+                                    className="app-input"
                                     placeholder="Your message"
                                     value={message}
                                     onChange={e => setMessage(e.target.value)}
@@ -107,16 +151,7 @@ export default function Contact() {
                                     style={{ ...inputStyle, resize: "none" }}
                                 />
                                 <Flex justify="flex-end">
-                                    <Button
-                                        onClick={handleSend}
-                                        style={{
-                                            background: "rgba(255,255,255,0.08)",
-                                            border: "1px solid rgba(255,255,255,0.15)",
-                                            color: "rgba(255,255,255,0.9)",
-                                        }}
-                                    >
-                                        Send Message
-                                    </Button>
+                                    <AppButton onClick={handleSend} variant="default">Send Message</AppButton>
                                 </Flex>
                             </Flex>
                         </div>
@@ -132,27 +167,27 @@ export default function Contact() {
                                 <Flex align="center" gap={12}>
                                     <MailFilled style={{ color: "rgba(255,255,255,0.5)", fontSize: 16 }} />
                                     <Typography.Text style={{ color: "rgba(255,255,255,0.85)", fontSize: 14 }}>
-                                        momarfouad2016@gmail.com
+                                        muhammad.omar1141@gmail.com
                                     </Typography.Text>
                                 </Flex>
                                 <Flex align="center" gap={12}>
                                     <LinkedinFilled style={{ color: "rgba(255,255,255,0.5)", fontSize: 16 }} />
                                     <Typography.Link
-                                        href="https://linkedin.com/in/muhammad-umar-fouad"
+                                        href="https://www.linkedin.com/in/m-o-927824397/"
                                         target="_blank"
                                         style={{ color: "rgba(255,255,255,0.85)", fontSize: 14 }}
                                     >
-                                        linkedin.com/in/muhammad-umar-fouad
+                                        https://www.linkedin.com/in/m-o-927824397/
                                     </Typography.Link>
                                 </Flex>
                                 <Flex align="center" gap={12}>
                                     <GithubFilled style={{ color: "rgba(255,255,255,0.5)", fontSize: 16 }} />
                                     <Typography.Link
-                                        href="https://github.com/momarfouad"
+                                        href="https://github.com/m-omar624"
                                         target="_blank"
                                         style={{ color: "rgba(255,255,255,0.85)", fontSize: 14 }}
                                     >
-                                        github.com/momarfouad
+                                        https://github.com/m-omar624
                                     </Typography.Link>
                                 </Flex>
                             </Flex>

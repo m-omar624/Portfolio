@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Card } from "antd";
+import { Card } from "antd";
+import AppButton from "./AppButton";
 import "./Entry.css";
 
 export default function Entry({
@@ -38,7 +39,7 @@ export default function Entry({
   const cards = [
     { title: "2+ Years in Full Stack Development", description: "Developing web applications and enterprise solutions at Magna International, Bond, and SellStatic" },
     { title: "Enterprise Apps", description: " I aim to digitize the industries that our world is built upon." },
-    { title: "Cloud & DevOps", description: "Experience with cloud platforms and DevOps practices to ensure scalable and reliable deployments." },
+    { title: "Based in Toronto, Canada", description: "Open to remote and onsite work in Canada or United States" },
   ]
 
   useEffect(() => {
@@ -71,14 +72,10 @@ export default function Entry({
       {isSummary && (
         <div className={`summary-extras${showExtras ? " show" : ""}`}>
           <div className="summary-buttons">
-            <Button type="primary" size="middle">View Projects</Button>
-            <Button
-              size="middle"
-              ghost
-              style={{ color: "rgba(255,255,255,0.8)", borderColor: "rgba(255,255,255,0.2)" }}
-            >
-              Download Resume
-            </Button>
+            <AppButton variant="primary" size="middle">View Projects</AppButton>
+            <a href="/resume.pdf" download>
+              <AppButton variant="default" size="middle" style={{ color: "rgba(255,255,255,0.8)", borderColor: "rgba(255,255,255,0.2)" }}>Download Resume</AppButton>
+            </a>
           </div>
           <div className="summary-cards" style={{ marginTop: "3vh" }}>
             {cards.map((card, i) => (

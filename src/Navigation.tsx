@@ -1,4 +1,4 @@
-import { Flex, Button, Typography } from "antd";
+import { Flex, Typography } from "antd";
 import {
     LoadingOutlined,
     LinkedinFilled,
@@ -7,6 +7,7 @@ import {
     SettingFilled,
 } from "@ant-design/icons";
 import NavButton from "./components/NavButton";
+import IconBtn from "./components/IconBtn";
 import { useEffect, useState } from "react";
 
 function scrollTo(id: string) {
@@ -28,6 +29,15 @@ const SECTIONS: { id: string; label: string }[] = [
 export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
     const [activeSection, setActiveSection] = useState<string | null>(null);
     const [flickerKey, setFlickerKey] = useState(0);
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        const onScroll = () => setScrollY(window.scrollY);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    const navIconOpacity = Math.min(1, scrollY / (window.innerHeight * 0.3));
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -93,7 +103,6 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
             >
                 {/* LEFT */}
                 <Flex gap={5}>
-                    <LoadingOutlined />
                     <NavButton content="Home" onClick={() => { scrollTo('home'); onItemClick?.(); }} />
                     <NavButton content="Experience" onClick={() => { scrollTo('experience'); onItemClick?.(); }} />
                     <NavButton content="Personal Projects" onClick={() => { scrollTo('projects'); onItemClick?.(); }} />
@@ -121,11 +130,28 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
                 </Typography.Title>
 
                 {/* RIGHT */}
-                <Flex gap={1}>
-                    <Button type="text" icon={<LinkedinFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
-                    <Button type="text" icon={<GithubFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
-                    <Button type="text" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} icon={<MailFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
-                    <Button type="text" icon={<SettingFilled />} style={{ color: "rgba(255, 255, 255, 0.8)" }} />
+                <Flex gap={0} style={{ opacity: navIconOpacity, transition: "opacity 150ms ease", pointerEvents: navIconOpacity < 0.05 ? "none" : "auto" }}>
+                              <a
+                                href="https://www.linkedin.com/in/m-o-927824397/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                    <IconBtn style={{ fontSize: 16 }}><LinkedinFilled /></IconBtn>
+
+                              </a>
+                              <a
+                                href="https://github.com/m-omar624"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                          <IconBtn style={{ fontSize: 16 }}><GithubFilled /></IconBtn>
+
+                              </a>
+                    
+
+                    <IconBtn style={{ fontSize: 16 }} onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}><MailFilled /></IconBtn>
+
+                    <IconBtn style={{ fontSize: 16 }}><SettingFilled /></IconBtn>
                 </Flex>
             </Flex>
         </div>

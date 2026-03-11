@@ -40,3 +40,25 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Landing icon button styles - handled via inline JS state in IconBtn component */
+
+/* Input placeholder visibility */
+.app-input input::-webkit-input-placeholder,
+.app-input textarea::-webkit-input-placeholder,
+.app-input input::-moz-placeholder,
+.app-input textarea::-moz-placeholder,
+.app-input input:-ms-input-placeholder,
+.app-input textarea:-ms-input-placeholder,
+.app-input input::placeholder,
+.app-input textarea::placeholder,
+.app-input ::placeholder,
+.app-input .ant-input::placeholder,
+.app-input .ant-input::-webkit-input-placeholder,
+.app-input .ant-input-textarea::placeholder,
+.app-input .ant-input-textarea::-webkit-input-placeholder,
+.app-input .ant-input-affix-wrapper input::placeholder,
+.app-input .ant-input-affix-wrapper textarea::placeholder {
+  color: rgba(255,255,255,0.92) !important;
+  opacity: 1 !important;
+}

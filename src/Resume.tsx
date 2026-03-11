@@ -1,8 +1,9 @@
-import { Button, Card } from "antd";
+import { Card } from "antd";
 import "./Resume.scss";
 import { Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import Entry from "./components/Entry";
+import AppButton from "./components/AppButton";
 import { useEffect, useRef, useState } from "react";
 
 import { GlobalWorkerOptions } from "pdfjs-dist";
@@ -87,12 +88,10 @@ export default function ResumeSection() {
             <div style={{ textAlign: "center" }}>
               <Entry text="VIEW MY RESUME" delays={[0,300,600]} duration={900} random={false} fontSize={55} fontWeight={800} play={visible} />
               <a href="/resume.pdf" download>
-                <Button
+                <AppButton
                   size="large"
-                  ghost
+                  variant="default"
                   style={{
-                    color: "rgba(255,255,255,0.8)",
-                    borderColor: "rgba(255,255,255,0.2)",
                     textTransform: "uppercase",
                     letterSpacing: 1,
                     fontSize: 12,
@@ -101,7 +100,7 @@ export default function ResumeSection() {
                   }}
                 >
                   Download Resume
-                </Button>
+                </AppButton>
               </a>
             </div>
           </div>

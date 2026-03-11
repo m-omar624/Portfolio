@@ -1,0 +1,8 @@
+New message from your portfolio
+
+From: {{from_name}} <{{from_email}}>
+
+{{message}}
+
+-- 
+Sent from portfolio contact form.

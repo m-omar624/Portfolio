@@ -1,6 +1,7 @@
-import { Button, Flex, Typography, Image, } from "antd";
+import { Flex, Typography, Image, } from "antd";
+import AppButton from "./components/AppButton";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import SkillScroller from "./components/SkillScroller";
+import SkillScroller from "./components/SkillTags";
 
 function useScrollVisible<T extends HTMLElement>(threshold = 0.1) {
     const ref = useRef<T>(null);
@@ -176,20 +177,8 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                             <Flex justify="space-between" >
                                                 <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginBottom: 0 }}>{`Software Engineer \u2013 Coop`}</Typography.Title>
                                                 <Flex align="top" justify="flex-end" gap={12}>
-                                                    <Button size="small" onClick={goToWork} style={{
-                                                        background: "rgba(120, 47, 255, 0.75)",
-                                                        border: "1px solid rgba(255,255,255,0.08)",
-                                                        color: "rgba(255,255,255,0.9)",
-                                                        padding: 13,
-                                                        fontSize: 15
-                                                    }}>My Work</Button>
-                                                    <Button size="small" onClick={() => onInteractive?.()} style={{
-                                                        background: "rgba(255,255,255,0.04)",
-                                                        border: "1px solid rgba(255,255,255,0.08)",
-                                                        color: "rgba(255,255,255,0.9)",
-                                                        padding: 13,
-                                                        fontSize: 15
-                                                    }}>Interactive</Button>
+                                                    <AppButton size="small" onClick={goToWork} variant="primary" style={{ fontSize: 15, padding: "6px 13px" }}>My Work</AppButton>
+                                                    <AppButton size="small" onClick={() => onInteractive?.()} variant="default" style={{ fontSize: 15, padding: "6px 13px" }}>Interactive</AppButton>
 
                                                 </Flex>
                                             </Flex>
@@ -348,12 +337,7 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                         </div>
                                     </Flex>
                                     <div style={{ ...getWorkCardStyle(6), display: 'flex', justifyContent: 'flex-start', marginTop: 0 }}>
-                                        <Button size="middle" onClick={goBack} style={{
-                                            background: 'rgba(255,255,255,0.04)',
-                                            border: '1px solid rgba(255,255,255,0.08)',
-                                            color: 'rgba(255,255,255,0.6)',
-                                            fontSize: 16,
-                                        }}>← Back</Button>
+                                        <AppButton size="middle" onClick={goBack} variant="default" style={{ fontSize: 16 }}>← Back</AppButton>
                                     </div>
                                 </Flex>
 
@@ -590,14 +574,11 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
 
                                     <SkillScroller
                                         skills={[
-                                            ["/Magna/react.png", "React"],
-                                            ["/Magna/ts.png", "TypeScript"],
-                                            ["/Magna/js.svg", "JavaScript"],
-                                            ["/Magna/python.png", "Python"],
-                                            ["/Magna/flask.png", "Flask"],
-                                            ["/Magna/three.png", "Three.js"],
-                                            ["/Magna/sql.svg", "SQL"],
-                                            ["/Magna/azure.png", "Azure"]
+                                            ["/Sellstatic/react.png", "React"],
+                                            ["/Sellstatic/python.png", "Python"],
+                                            ["/Sellstatic/django.svg", "Django"],
+                                            ["/Sellstatic/AWS.png", "AWS"],
+                                            ["/Sellstatic/node.png", "NodeJS"]
                                         ]}></SkillScroller>
 
                                 </div>

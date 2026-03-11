@@ -1,6 +1,6 @@
 import { Button, Flex, Typography } from "antd";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import SkillScroller from "./components/SkillScroller";
+import SkillScroller from "./components/SkillTags";
 import ProjectCard from "./components/ProjectCard";
 
 function useScrollVisible<T extends HTMLElement>(threshold = 0.1) {
@@ -139,8 +139,8 @@ export default function Projects() {
                     <Flex gap={30} style={{ marginBottom: 20 }}>
                         <div style={{ width: "50%" }}>
                             <Flex vertical gap={"30px"}>
-                            <ProjectCard title="HireUpp" description={HireUppDesc} tags={HireUppTags} image="/Projects/HireuppSelect.png" />
-                            <ProjectCard title="Bookmark" description={BookmarkDesc} tags={BookmarkTags} image="/Projects/Bookmark.png" />
+                            <ProjectCard title="HireUpp" description={HireUppDesc} tags={HireUppTags} image="/Projects/HireuppSelect.png" github="https://github.com/ua0101/hireupp" />
+                            <ProjectCard title="Bookmark" description={BookmarkDesc} tags={BookmarkTags} image="/Projects/Bookmark.png" github="https://github.com/HuseynAkh/Bookmark" />
                             <ProjectCard title="Tether" description={TetherDesc} tags={TetherTags} image="/Projects/Tether.png" />
 
 
@@ -148,8 +148,8 @@ export default function Projects() {
                         </div>
                         
                         <Flex ref={magnaSection.ref} vertical gap={"30px"} style={{ width: "50%", paddingTop:"30vh" }}>
-                            <ProjectCard title="BidlyAuctions" description={BidlyAuctionsDesc} tags={BidlyAuctionsTags} image="/Projects/Bidly.png" />
-                            <ProjectCard title="Chatroom" description={ChatroomDesc} tags={ChatroomTags} image="/Projects/SecureChat.png" />
+                            <ProjectCard title="BidlyAuctions" description={BidlyAuctionsDesc} tags={BidlyAuctionsTags} image="/Projects/Bidly.png" github="https://github.com/Isaiahak/EECS-4413-Group-Project"/>
+                            <ProjectCard title="Chatroom" description={ChatroomDesc} tags={ChatroomTags} image="/Projects/SecureChat.png" github="https://github.com/m-omar624/Python-Secure-Chat-Room"/>
                         </Flex>
 
                     </Flex>

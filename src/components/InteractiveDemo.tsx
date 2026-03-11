@@ -196,6 +196,7 @@ export default function InteractiveDemo({ onClose }: Props) {
 
     // ── Renderer ──────────────────────────────────────────────────────────
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setClearColor(0x000000, 1); // prevent white flash before first frame
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -207,8 +208,9 @@ export default function InteractiveDemo({ onClose }: Props) {
     // ── Scene – starts pitch black ─────────────────────────────────────────
     const scene = new THREE.Scene();
     const bgDark = new THREE.Color(0x000000);
-    const bgBright = new THREE.Color(0x141414);
+    const bgBright = new THREE.Color(0x080b14); // deep dark blue-black for atmosphere
     scene.background = bgDark.clone();
+    scene.fog = new THREE.FogExp2(0x080b14, 0.018);
 
     // ── Camera ─────────────────────────────────────────────────────────────
     const camera = new THREE.PerspectiveCamera(
@@ -356,9 +358,35 @@ export default function InteractiveDemo({ onClose }: Props) {
         groundMesh.position.y = groundY - 0.001;
         groundMesh.receiveShadow = true;
         scene.add(groundMesh);
+
+        // Reflective dark floor for atmosphere
+        const reflectFloor = new THREE.Mesh(
+          new THREE.PlaneGeometry(40, 40),
+          new THREE.MeshStandardMaterial({ color: 0x050810, roughness: 0.1, metalness: 0.95 })
+        );
+        reflectFloor.rotation.x = -Math.PI / 2;
+        reflectFloor.position.y = groundY - 0.003;
+        scene.add(reflectFloor);
+
+        // Floating dust / atmosphere particles
+        const particleCount = 320;
+        const pPos = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount; i++) {
+          pPos[i * 3]     = (Math.random() - 0.5) * 30;
+          pPos[i * 3 + 1] = groundY + 0.2 + Math.random() * 8;
+          pPos[i * 3 + 2] = (Math.random() - 0.5) * 30;
+        }
+        const pGeo = new THREE.BufferGeometry();
+        pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
+        const pMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.032, transparent: true, opacity: 0.18, sizeAttenuation: true });
+        const dustParticles = new THREE.Points(pGeo, pMat);
+        scene.add(dustParticles);
+
         grid.visible = false;
         groundMesh.visible = false;
-        lightsRevealRef.current!.gridObjects.push(grid, groundMesh);
+        reflectFloor.visible = false;
+        dustParticles.visible = false;
+        lightsRevealRef.current!.gridObjects.push(grid, groundMesh, reflectFloor, dustParticles);
 
         // ── Intro camera parameters ───────────────────────────────────────
         // Camera faces the front of the car (-Z side) at theta = π,
@@ -475,7 +503,7 @@ export default function InteractiveDemo({ onClose }: Props) {
 
     // ── Render loop ────────────────────────────────────────────────────────
     const SCENE_TARGET = {
-      ambient: 0.28, key: 1.6, fill: 0.65, rim: 0.5, headLight: 7, tailLight: 4,
+      ambient: 0.32, key: 1.9, fill: 0.75, rim: 0.65, headLight: 8, tailLight: 5,
     };
     const SCENE_DURATION = 4000;  // ms – scene lights fade in during spin
     const INTRO_DURATION = 5000;  // ms – 270° spin
@@ -626,8 +654,38 @@ export default function InteractiveDemo({ onClose }: Props) {
       {sceneActive && (
         <canvas
           ref={canvasRef}
-          style={{ display: "block", width: "100%", height: "100%" }}
+          style={{ display: "block", width: "100%", height: "100%", background: "#000" }}
         />
+      )}
+
+      {/* Atmosphere overlays */}
+      {sceneActive && (
+        <>
+          {/* Vignette */}
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "radial-gradient(ellipse at 50% 75%, transparent 30%, rgba(0,0,6,0.72) 100%)",
+            pointerEvents: "none", zIndex: 2,
+          }} />
+          {/* Top edge fade */}
+          <div style={{
+            position: "absolute", top: 0, left: 0, right: 0, height: 180,
+            background: "linear-gradient(to bottom, rgba(0,0,8,0.75) 0%, transparent 100%)",
+            pointerEvents: "none", zIndex: 2,
+          }} />
+          {/* Bottom edge fade */}
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, right: 0, height: 130,
+            background: "linear-gradient(to top, rgba(0,0,8,0.65) 0%, transparent 100%)",
+            pointerEvents: "none", zIndex: 2,
+          }} />
+          {/* Subtle scanlines */}
+          <div style={{
+            position: "absolute", inset: 0,
+            backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.025) 3px, rgba(0,0,0,0.025) 4px)",
+            pointerEvents: "none", zIndex: 3,
+          }} />
+        </>
       )}
 
       {/* Hint */}

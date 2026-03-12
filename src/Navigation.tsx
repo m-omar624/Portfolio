@@ -103,10 +103,10 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
                 {/* LEFT */}
                 <Flex gap={5}>
                     <NavButton content="Home" onClick={() => { scrollTo('home'); onItemClick?.(); }} />
+                    <NavButton content="About Me" onClick={() => { scrollTo('about'); onItemClick?.(); }} />
                     <NavButton content="Experience" onClick={() => { scrollTo('experience'); onItemClick?.(); }} />
                     <NavButton content="Personal Projects" onClick={() => { scrollTo('projects'); onItemClick?.(); }} />
                     <NavButton content="Resume" onClick={() => { scrollTo('resume'); onItemClick?.(); }} />
-                    <NavButton content="About Me" onClick={() => { scrollTo('about'); onItemClick?.(); }} />
                     <NavButton content="Contact" onClick={() => { scrollTo('contact'); onItemClick?.(); }} />
                 </Flex>
 
@@ -130,23 +130,23 @@ export default function Navbar({ onItemClick }: { onItemClick?: () => void }) {
 
                 {/* RIGHT */}
                 <Flex gap={0} style={{ opacity: navIconOpacity, transition: "opacity 150ms ease", pointerEvents: navIconOpacity < 0.05 ? "none" : "auto" }}>
-                              <a
-                                href="https://www.linkedin.com/in/m-o-927824397/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                    <IconBtn style={{ fontSize: 16 }}><LinkedinFilled /></IconBtn>
+                    <a
+                        href="https://www.linkedin.com/in/m-o-927824397/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <IconBtn style={{ fontSize: 16 }}><LinkedinFilled /></IconBtn>
 
-                              </a>
-                              <a
-                                href="https://github.com/m-omar624"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                          <IconBtn style={{ fontSize: 16 }}><GithubFilled /></IconBtn>
+                    </a>
+                    <a
+                        href="https://github.com/m-omar624"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <IconBtn style={{ fontSize: 16 }}><GithubFilled /></IconBtn>
 
-                              </a>
-                    
+                    </a>
+
 
                     <IconBtn style={{ fontSize: 16 }} onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}><MailFilled /></IconBtn>
 

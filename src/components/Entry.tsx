@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card } from "antd";
+import { Card, Typography } from "antd";
 import AppButton from "./AppButton";
 import "./Entry.css";
 
@@ -72,9 +72,19 @@ export default function Entry({
       {isSummary && (
         <div className={`summary-extras${showExtras ? " show" : ""}`}>
           <div className="summary-buttons">
-            <AppButton variant="primary" size="middle">View Projects</AppButton>
+            <AppButton variant="primary" size="middle"
+              onClick={() =>
+                document
+                  .getElementById("experience")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              <Typography.Text style={{ color: "rgb(255, 255, 255)", fontSize: 12, letterSpacing: 1, textTransform: 'uppercase' }}>My Experience</Typography.Text>
+            </AppButton>
             <a href="/resume.pdf" download>
-              <AppButton variant="default" size="middle" style={{ color: "rgba(255,255,255,0.8)", borderColor: "rgba(255,255,255,0.2)" }}>Download Resume</AppButton>
+              <AppButton variant="default" size="middle" style={{ color: "rgba(255,255,255,0.8)", borderColor: "rgba(255,255,255,0.2)" }}>
+                <Typography.Text style={{ color: "rgb(255, 255, 255)", fontSize: 12, letterSpacing: 1, textTransform: 'uppercase' }}>Download Resume</Typography.Text>
+              </AppButton>
             </a>
           </div>
           <div className="summary-cards" style={{ marginTop: "3vh" }}>
@@ -92,7 +102,7 @@ export default function Entry({
                 }}
               >
                 <Card.Meta
-                  title={<span style={{ color: "rgba(255,255,255,0.9)", fontWeight: 600, fontSize: 14 }}>{card.title}</span>}
+                  title={<span style={{ color: "rgba(255,255,255,0.9)", fontWeight: 600, fontSize: 12, letterSpacing: 0.7, textTransform: 'uppercase' }}>{card.title}</span>}
                   description={<span style={{ color: "rgba(255,255,255,0.45)", fontSize: 12 }}>{card.description}</span>}
                 />
               </Card>

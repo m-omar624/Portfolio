@@ -177,8 +177,8 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                             <Flex justify="space-between" >
                                                 <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.9)", marginBottom: 0 }}>{`Software Engineer \u2013 Coop`}</Typography.Title>
                                                 <Flex align="top" justify="flex-end" gap={12}>
-                                                    <AppButton size="small" onClick={goToWork} variant="primary" style={{ fontSize: 15, padding: "6px 13px" }}>My Work</AppButton>
-                                                    <AppButton size="small" onClick={() => onInteractive?.()} variant="default" style={{ fontSize: 15, padding: "6px 13px" }}>Interactive</AppButton>
+                                                    <AppButton size="small" onClick={goToWork} variant="primary" style={{ fontSize: 10, padding: "3px 8px", color: "rgba(255, 255, 255, 0.7)", letterSpacing: 1, textTransform: 'uppercase' }}>My Work</AppButton>
+                                                    <AppButton size="small" onClick={() => onInteractive?.()} variant="default" style={{ fontSize: 10, padding: "3px 8px", color: "rgba(255, 255, 255, 0.7)", letterSpacing: 1, textTransform: 'uppercase' }}>Interactive</AppButton>
 
                                                 </Flex>
                                             </Flex>
@@ -337,7 +337,7 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                         </div>
                                     </Flex>
                                     <div style={{ ...getWorkCardStyle(6), display: 'flex', justifyContent: 'flex-start', marginTop: 0 }}>
-                                        <AppButton size="middle" onClick={goBack} variant="default" style={{ fontSize: 16 }}>← Back</AppButton>
+                                        <AppButton size="middle" onClick={goBack} variant="default" style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: 13, letterSpacing: 1, textTransform: 'uppercase' }}>← Back</AppButton>
                                     </div>
                                 </Flex>
 

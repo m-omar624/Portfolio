@@ -151,7 +151,9 @@ export default function Contact() {
                                     style={{ ...inputStyle, resize: "none" }}
                                 />
                                 <Flex justify="flex-end">
-                                    <AppButton onClick={handleSend} variant="default">Send Message</AppButton>
+                                    <AppButton onClick={handleSend} variant="default">
+                                        <Typography.Text style={{ color: "rgba(255, 255, 255, 0.7)", fontSize: 12, letterSpacing: 1, textTransform: 'uppercase' }}>Send Message</Typography.Text>
+                                    </AppButton>
                                 </Flex>
                             </Flex>
                         </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import modelUrl from "../assets/viewer/BMV/source/BMW X3 M40i.glb?url";
+import { Typography } from "antd";
 
 const textureAssets: Record<string, string> = {
   ...(import.meta.glob("../assets/viewer/BMV/textures/*.png", {
@@ -39,7 +40,7 @@ const INDICATOR_PANELS: Record<string, PanelDef[]> = {
     {
       title: "Multi Body Dynamics Viewer (CollabSpace)",
       description: "A web based rendering engine built to visualize multi body dynamics simulation data. Provides visualization of animations, forces applied, and physical data such as torque, acceleration, position, etc.",
-      video: "/MagnaWorkSamples/CollabMBDAnimation2.mp4",
+      video: "/MagnaWorkSamples/CollabMBDAnimation2Obscured.mp4",
       width: 600,
       offsetX: -610, offsetY: 40,
     },
@@ -101,7 +102,7 @@ const INDICATOR_PANELS: Record<string, PanelDef[]> = {
     {
       title: "Finite Element Analysis",
       description: "A web based rendering engine built to visualize finite element simulation results.",
-      video: "/MagnaWorkSamples/CollabFEAAnimation.mp4",
+      video: "/MagnaWorkSamples/CollabFEAAnimationObscured.mp4",
       width: 600,
       offsetX: -140, offsetY:150,
     },
@@ -705,7 +706,11 @@ export default function InteractiveDemo({ onClose }: Props) {
             whiteSpace: "nowrap",
           }}
         >
-          Move mouse to rotate
+                                              <div style={{ background: "transparent", width: "100%", height: "100%"}}>
+                                    <Typography.Text style={{ color: "rgb(255, 255, 255)", fontSize: 12, letterSpacing: 1, fontWeight:500, textTransform: 'uppercase' }}>
+                                        Images and Videos are obscured for confidentiality of magna and its clients.
+                                    </Typography.Text>
+                                    </div>
         </div>
       )}
 

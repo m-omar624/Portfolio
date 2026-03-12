@@ -274,6 +274,12 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                 pointerEvents: magnaView === 'work' ? 'auto' : 'none',
                             }}>
                                 <Flex vertical gap={20} style={{ marginBottom: 20, paddingInline: "15vw" }}>
+                                    <div style={{ background: "transparent", width: "100%", height: "100%", ...getWorkCardStyle(7) }}>
+                                    <Typography.Text style={{ color: "rgb(255, 145, 0)", fontSize: 9, letterSpacing: 1, fontWeight:700, textTransform: 'uppercase' }}>
+                                        Images and Videos are obscured for confidentiality of magna and its clients.
+                                    </Typography.Text>
+                                    </div>
+
                                     <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, width: "100%", height: "100%", ...getWorkCardStyle(0) }}>
 
                                         <Flex gap={10} style={{ flex: 1 }}>
@@ -282,11 +288,12 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                                 <Typography.Text style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>A Global Platform for Engineers, clients, and designers to verify and approve analysis requests.
                                                     Integrated into the design process, Collab bridges the disconnect between teams and clients, providing understandable simulation data for everyone
                                                 </Typography.Text>
+
                                             </div>
                                             <div>
 
                                                 <Flex vertical gap={0} style={{ paddingBlock: 10 }}>
-                                                    <video src="/MagnaWorkSamples/CollabFEAAnimation.mp4" style={{ width: "25vw" }} autoPlay loop muted></video>
+                                                    <video src="/MagnaWorkSamples/CollabFEAAnimationObscured.mp4" style={{ width: "25vw" }} autoPlay loop muted></video>
                                                 </Flex>
                                                 <div style={{ padding: 0 }}>
                                                     <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Finite Element Analysis Viewer (Collab)</Typography.Title>
@@ -295,7 +302,7 @@ export default function Experience({ onInteractive }: { onInteractive?: () => vo
                                             <div>
 
                                                 <Flex vertical gap={0} style={{ paddingBlock: 10 }}>
-                                                    <video src="/MagnaWorkSamples/CollabMBDAnimation2.mp4" style={{ width: "25vw" }} autoPlay loop muted ></video>
+                                                    <video src="/MagnaWorkSamples/CollabMBDAnimation2Obscured.mp4" style={{ width: "25vw" }} autoPlay loop muted ></video>
                                                 </Flex>
                                                 <div style={{ padding: 0 }}>
                                                     <Typography.Title level={4} style={{ color: "rgba(255,255,255,0.4)", fontSize: 9, letterSpacing: 1, textTransform: 'uppercase' }}>Multi Body Dynamics Viewer (Collab)</Typography.Title>

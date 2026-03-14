@@ -71,7 +71,7 @@ export default function About() {
 
             <Flex gap={16} style={{ marginTop: 18 }}>
                 <div style={{ width: "34%", ...cardStyle(section.visible, 120), overflow: "hidden" }}>
-                    <div style={{ width: "100%", height: 340, backgroundImage: "url('/Bond/profile.jpg')", backgroundSize: "cover", backgroundPosition: "center" }} />
+                    <div style={{ width: "100%", height: 340, backgroundImage: "url('/AboutMe.jpeg')", backgroundSize: "cover", backgroundPosition: "center" }} />
                 </div>
 
                 <Flex vertical gap={12} style={{ width: "66%" }}>

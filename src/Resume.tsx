@@ -67,7 +67,7 @@ export default function ResumeSection() {
             }}
           >
             {visible ? (
-              <Viewer theme={"dark"} enableSmoothScroll defaultScale={1.0} fileUrl="/resume.pdf" />
+              <Viewer theme={"dark"} enableSmoothScroll defaultScale={1.0} fileUrl="/Muhammad-Omar-Resume.pdf" />
             ) : (
               <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 13 }}>Resume will load when visible...</div>
             )}

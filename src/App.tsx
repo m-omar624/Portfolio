@@ -17,6 +17,19 @@ export default function App() {
 
   return (
     <>
+      {/* Black backdrop — stays mounted and fades out with content fade-in to prevent white flash */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9998,
+          background: "#000",
+          opacity: demoOpen ? 1 : 0,
+          transition: "opacity 400ms ease",
+          pointerEvents: "none",
+        }}
+      />
+
       {/* Interactive Demo — full-screen overlay */}
       {demoOpen && (
         <div style={{ position: "fixed", inset: 0, zIndex: 9999 }}>
@@ -44,7 +57,7 @@ export default function App() {
             color: token.colorText,
             position: "relative",
             zIndex: 1,
-            backgroundColor: token.colorBgBase,
+            backgroundColor: "black",
           }}
         >
           <Flex vertical gap={80} style={{backgroundColor:"black"}}>

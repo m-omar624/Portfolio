@@ -112,12 +112,10 @@ const INDICATOR_PANELS: Record<string, PanelDef[]> = {
 export default function InteractiveDemo({ onClose }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [opaque, setOpaque] = useState(false);
+  const [curtainOpaque, setCurtainOpaque] = useState(true);
   const [sceneActive, setSceneActive] = useState(false);
   const [closing, setClosing] = useState(false);
   const [modelLoaded, setModelLoaded] = useState(false);
-  const [pickerMode, setPickerMode] = useState(false);
-  const [pickerInfo, setPickerInfo] = useState<string | null>(null);
   const [indicatorDefs, setIndicatorDefs] = useState<{ id: string; label: string }[]>([]);
   const [openPanel, setOpenPanel] = useState<string | null>(null);
   const [openPanelAnchor, setOpenPanelAnchor] = useState<{ x: number; y: number } | null>(null);
@@ -127,7 +125,6 @@ export default function InteractiveDemo({ onClose }: Props) {
   const sceneRevealStartRef = useRef<number | null>(null);
   const introPhaseRef = useRef<"idle" | "spinning" | "done">("idle");
   const introStartRef = useRef<number | null>(null);
-  const pickerModeRef = useRef(false);
   const indicatorsRef = useRef<THREE.Vector3[]>([]);
   const indicatorDomRefs = useRef<(HTMLDivElement | null)[]>([]);
   const indicatorDefsRef = useRef<{ id: string; label: string }[]>([]);
@@ -159,16 +156,12 @@ export default function InteractiveDemo({ onClose }: Props) {
     gridObjects: THREE.Object3D[];
   } | null>(null);
 
-  // Keep pickerModeRef in sync with React state
-  useEffect(() => {
-    pickerModeRef.current = pickerMode;
-  }, [pickerMode]);
   useEffect(() => { openPanelRef.current = openPanel; }, [openPanel]);
 
   // ── 1. Fade-in on mount ──────────────────────────────────────────────────
   useEffect(() => {
     const r = requestAnimationFrame(() =>
-      requestAnimationFrame(() => setOpaque(true))
+      requestAnimationFrame(() => setCurtainOpaque(false))
     );
     return () => cancelAnimationFrame(r);
   }, []);
@@ -176,12 +169,12 @@ export default function InteractiveDemo({ onClose }: Props) {
   // ── 2. Close handler ─────────────────────────────────────────────────────
   const handleClose = () => {
     setClosing(true);
-    setOpaque(false);
+    setCurtainOpaque(true);
   };
 
-  // ── 3. Opacity transition end ────────────────────────────────────────────
-  const handleTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget || e.propertyName !== "opacity") return;
+  // ── 3. Curtain transition end ────────────────────────────────────────────
+  const handleCurtainTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.propertyName !== "opacity") return;
     if (closing) {
       onClose();
     } else {
@@ -468,26 +461,6 @@ export default function InteractiveDemo({ onClose }: Props) {
     const mouseTgt    = { x: 0, y: 0 };
     let baseCam: { theta: number; phi: number; radius: number; target: THREE.Vector3; groundY: number } | null = null;
 
-    // ── Raycaster for position picker ──────────────────────────────────────
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    const handleClick = (e: MouseEvent) => {
-      if (!pickerModeRef.current) return;
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const hits = raycaster.intersectObjects(scene.children, true);
-      if (hits.length > 0) {
-        const p = hits[0].point;
-        const meshName =
-          hits[0].object instanceof THREE.Mesh ? hits[0].object.name : "?";
-        setPickerInfo(
-          `mesh: "${meshName}" | x: ${p.x.toFixed(3)}, y: ${p.y.toFixed(3)}, z: ${p.z.toFixed(3)}`
-        );
-      }
-    };
-    canvas.addEventListener("click", handleClick);
-
     const handleMouseMove = (e: MouseEvent) => {
       mouseTgt.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouseTgt.y = -((e.clientY / window.innerHeight) * 2 - 1);
@@ -612,7 +585,6 @@ export default function InteractiveDemo({ onClose }: Props) {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", onResize);
-      canvas.removeEventListener("click", handleClick);
       canvas.removeEventListener("mousemove", handleMouseMove);
       lightPhaseRef.current = "dark";
       sceneRevealStartRef.current = null;
@@ -631,13 +603,23 @@ export default function InteractiveDemo({ onClose }: Props) {
         position: "fixed",
         inset: 0,
         background: "#000",
-        opacity: opaque ? 1 : 0,
-        transition: "opacity 0.8s ease",
         zIndex: 9999,
         overflow: "hidden",
       }}
-      onTransitionEnd={handleTransitionEnd}
     >
+      {/* Black curtain – fades in/out to avoid white flash */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "#000",
+          opacity: curtainOpaque ? 1 : 0,
+          transition: "opacity 0.8s ease",
+          zIndex: 10000,
+          pointerEvents: "none",
+        }}
+        onTransitionEnd={handleCurtainTransitionEnd}
+      />
       <style>{`
         @keyframes indicatorPulse {
           0%, 100% { transform: scale(1); opacity: 0.55; }
@@ -882,87 +864,6 @@ export default function InteractiveDemo({ onClose }: Props) {
         </div>
       ))}
 
-      {/* Picker toggle */}
-      {modelLoaded && (
-        <button
-          onClick={() => {
-            setPickerMode((p) => !p);
-            setPickerInfo(null);
-          }}
-          style={{
-            position: "absolute",
-            top: 24,
-            right: 112,
-            background: pickerMode ? "rgba(255,85,0,0.18)" : "transparent",
-            border: `1px solid ${pickerMode ? "rgba(255,85,0,0.8)" : "rgba(255,255,255,0.3)"}`,
-            color: pickerMode ? "#ff7733" : "rgba(255,255,255,0.8)",
-            padding: "10px 22px",
-            cursor: "pointer",
-            fontSize: 11,
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-            transition: "all 0.2s ease",
-          }}
-        >
-          Picker
-        </button>
-      )}
-
-      {/* Picker info panel */}
-      {pickerMode && (
-        <div
-          style={{
-            position: "absolute",
-            top: 70,
-            right: 24,
-            background: "rgba(0,0,0,0.78)",
-            border: "1px solid rgba(255,85,0,0.35)",
-            color: "rgba(255,255,255,0.85)",
-            fontSize: 11,
-            letterSpacing: "1px",
-            padding: "14px 18px",
-            maxWidth: 400,
-            lineHeight: 1.9,
-          }}
-        >
-          <div
-            style={{
-              color: "#ff7733",
-              marginBottom: 6,
-              textTransform: "uppercase",
-              letterSpacing: "2px",
-            }}
-          >
-            Position Picker
-          </div>
-          <div
-            style={{
-              color: "rgba(255,255,255,0.45)",
-              marginBottom: 10,
-              fontSize: 10,
-            }}
-          >
-            Click any surface on the model to get its world-space position.
-            <br />
-            Share the coords to place headlight / taillight point-lights.
-          </div>
-          {pickerInfo ? (
-            <div style={{ fontFamily: "monospace", color: "#ff9955" }}>
-              {pickerInfo}
-            </div>
-          ) : (
-            <div
-              style={{
-                color: "rgba(255,255,255,0.3)",
-                fontStyle: "italic",
-              }}
-            >
-              awaiting click…
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Exit */}
       <button
         onClick={handleClose}
@@ -970,23 +871,25 @@ export default function InteractiveDemo({ onClose }: Props) {
           position: "absolute",
           top: 24,
           right: 24,
-          background: "transparent",
-          border: "1px solid rgba(255,255,255,0.3)",
-          color: "rgba(255,255,255,0.8)",
-          padding: "10px 22px",
+          background: "rgba(255,255,255,0.12)",
+          border: "1px solid rgba(255,255,255,0.7)",
+          color: "#fff",
+          padding: "10px 28px",
           cursor: "pointer",
-          fontSize: 11,
-          letterSpacing: "2px",
+          fontSize: 12,
+          fontWeight: 600,
+          letterSpacing: "2.5px",
           textTransform: "uppercase",
-          transition: "border-color 0.2s ease, color 0.2s ease",
+          zIndex: 10001,
+          transition: "background 0.2s ease, border-color 0.2s ease",
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = "rgba(255,255,255,0.8)";
-          e.currentTarget.style.color = "#fff";
+          e.currentTarget.style.background = "rgba(255,255,255,0.22)";
+          e.currentTarget.style.borderColor = "#fff";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
-          e.currentTarget.style.color = "rgba(255,255,255,0.8)";
+          e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+          e.currentTarget.style.borderColor = "rgba(255,255,255,0.7)";
         }}
       >
         Exit

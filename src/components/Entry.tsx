@@ -81,7 +81,7 @@ export default function Entry({
             >
               <Typography.Text style={{ color: "rgb(255, 255, 255)", fontSize: 12, letterSpacing: 1, textTransform: 'uppercase' }}>My Experience</Typography.Text>
             </AppButton>
-            <a href="/resume.pdf" download>
+            <a href="/Muhammad-Omar-Resume.pdf" download>
               <AppButton variant="default" size="middle" style={{ color: "rgba(255,255,255,0.8)", borderColor: "rgba(255,255,255,0.2)" }}>
                 <Typography.Text style={{ color: "rgb(255, 255, 255)", fontSize: 12, letterSpacing: 1, textTransform: 'uppercase' }}>Download Resume</Typography.Text>
               </AppButton>

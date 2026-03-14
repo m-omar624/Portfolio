@@ -87,7 +87,7 @@ export default function ResumeSection() {
           >
             <div style={{ textAlign: "center" }}>
               <Entry text="VIEW MY RESUME" delays={[0,300,600]} duration={900} random={false} fontSize={55} fontWeight={800} play={visible} />
-              <a href="/resume.pdf" download>
+              <a href="/Muhammad-Omar-Resume.pdf" download>
                 <AppButton
                   size="large"
                   variant="default"
